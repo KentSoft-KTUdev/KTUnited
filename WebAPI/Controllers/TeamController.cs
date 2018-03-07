@@ -6,12 +6,11 @@ using System.Web.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class HomeController : Controller
+    public class TeamController : Controller
     {
+        // GET: Team
         public ActionResult Index()
         {
-            ViewBag.Title = "KentSoft WebAPI";
-
             return View();
         }
     }
