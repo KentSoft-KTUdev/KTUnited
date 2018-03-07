@@ -242,8 +242,19 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DormitoriesController.cs" />
+    <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ResidentsController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\TeamController.cs" />
+    <Compile Include="Controllers\VisitsController.cs" />
+    <Compile Include="DataModels\Dormitory.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\Guest.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModels\MainDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -258,6 +269,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MainDbModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\Resident.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\Room.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\Visit.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -275,6 +295,11 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\Arnas.jpg" />
+    <Content Include="Content\img\Arturas.jpg" />
+    <Content Include="Content\img\Dalius.jpg" />
+    <Content Include="Content\img\Edvardas.jpg" />
+    <Content Include="Content\img\Mindaugas.jpg" />
     <Content Include="DataModels\MainDbModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MainDbModel.Context.cs</LastGenOutput>
@@ -346,6 +371,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Team\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

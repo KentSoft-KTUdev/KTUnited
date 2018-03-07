@@ -19,6 +19,9 @@ using WebAPI.Results;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// API authentication control
+    /// </summary>
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController

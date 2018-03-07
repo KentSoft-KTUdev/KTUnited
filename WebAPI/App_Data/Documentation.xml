@@ -481,11 +481,210 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:WebAPI.Controllers.ValuesController.Get">
+        <member name="T:WebAPI.Controllers.AccountController">
             <summary>
-            testtesttest
+            API authentication control
             </summary>
-            <returns></returns>
+        </member>
+        <member name="T:WebAPI.Controllers.DormitoriesController">
+            <summary>
+            All possible interactions within Dormitories API
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.DormitoriesController.GetDormitorySet">
+            <summary>
+            Returns JSON serialized array of Dormitory objects
+            </summary>
+            <returns>List of Dormitories</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DormitoriesController.GetDormitory(System.Int32)">
+            <summary>
+            Returns JSON seriliazed Dormitory object determined by identification key
+            </summary>
+            <param name="id">Visit identifaction key</param>
+            <returns>Http request result</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DormitoriesController.PutDormitory(System.Int32,WebAPI.DataModels.Dormitory)">
+            <summary>
+            Updates particular Dormitory object in SQL database
+            </summary>
+            <param name="id">Dormitory to be updated identifaction key</param>
+            <param name="dormitory">Updated Dormitory object which will replace existing Dormitory object in SQL database</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DormitoriesController.PostDormitory(WebAPI.DataModels.Dormitory)">
+            <summary>
+            Inserts new Dormitory object into SQL database
+            </summary>
+            <param name="dormitory">Dormitory to be inserted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.DormitoriesController.DeleteDormitory(System.Int32)">
+            <summary>
+            Deletes existing Dormitory object in SQL database
+            </summary>
+            <param name="id">Identification key of Dormitory to be deleted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.GuestsController">
+            <summary>
+            All possible interactions within Guests API
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.GuestsController.GetGuestSet">
+            <summary>
+            Returns JSON serialized array of Guest objects
+            </summary>
+            <returns>List of Guests</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuestsController.GetGuest(System.Int64)">
+            <summary>
+            Returns JSON seriliazed Guest object determined by identification key
+            </summary>
+            <param name="id">Guest identifaction key</param>
+            <returns>Http request result</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuestsController.PutGuest(System.Int64,WebAPI.DataModels.Guest)">
+            <summary>
+            Updates particular Guest object in SQL database
+            </summary>
+            <param name="id">Guest to be updated identifaction key</param>
+            <param name="guest">Updated Guest object which will replace existing Guest object in SQL database</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuestsController.PostGuest(WebAPI.DataModels.Guest)">
+            <summary>
+            Inserts new Guest object into SQL database
+            </summary>
+            <param name="guest">Guest to be inserted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuestsController.DeleteGuest(System.Int64)">
+            <summary>
+            Deletes existing Guest object in SQL database
+            </summary>
+            <param name="id">Identification key of Guest to be deleted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.ResidentsController">
+            <summary>
+            All possible interactions within Residents API
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.GetResidentSet">
+            <summary>
+            Returns JSON serialized array of Resident objects
+            </summary>
+            <returns>List of Residents</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.GetResident(System.Int64)">
+            <summary>
+            Returns JSON seriliazed Resident object determined by identification key
+            </summary>
+            <param name="id">Resident identifaction key</param>
+            <returns>Http request result</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.PutResident(System.Int64,WebAPI.DataModels.Resident)">
+            <summary>
+            Updates particular Resident object in SQL database
+            </summary>
+            <param name="id">Resident to be updated identifaction key</param>
+            <param name="resident">Updated Resident object which will replace existing Resident object in SQL database</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.PostResident(WebAPI.DataModels.Resident)">
+            <summary>
+            Inserts new Resident object into SQL database
+            </summary>
+            <param name="resident">Resident to be inserted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.DeleteResident(System.Int64)">
+            <summary>
+            Deletes existing Resident object in SQL database
+            </summary>
+            <param name="id">Identification key of Resident to be deleted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.RoomsController">
+            <summary>
+            All possible interactions within Dormitories API
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.RoomsController.GetRoomSet">
+            <summary>
+            Returns JSON serialized array of Rooms objects
+            </summary>
+            <returns>List of Rooms</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.RoomsController.GetRoom(System.Int32)">
+            <summary>
+            Returns JSON seriliazed Room object determined by identification key
+            </summary>
+            <param name="id">Room identifaction key</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.RoomsController.PutRoom(System.Int32,WebAPI.DataModels.Room)">
+            <summary>
+            Updates particular Room object in SQL database
+            </summary>
+            <param name="id">Room to be updated identifaction key</param>
+            <param name="room">Updated Room object which will replace existing Room object in SQL database</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.RoomsController.PostRoom(WebAPI.DataModels.Room)">
+            <summary>
+            Inserts new Room object into SQL database
+            </summary>
+            <param name="room">Room to be inserted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.RoomsController.DeleteRoom(System.Int32)">
+            <summary>
+            Deletes existing Room object in SQL database
+            </summary>
+            <param name="id">Identification key of Room to be deleted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="T:WebAPI.Controllers.VisitsController">
+            <summary>
+            All possible interactions within Visits API
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.GetVisitSet">
+            <summary>
+            Returns JSON serialized array of Visit objects
+            </summary>
+            <returns>List of Visits</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.GetVisit(System.Int32)">
+            <summary>
+            Returns JSON seriliazed Visit object determined by identification key
+            </summary>
+            <param name="id">Visit identifaction key</param>
+            <returns>Http request result</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.PutVisit(System.Int32,WebAPI.DataModels.Visit)">
+            <summary>
+            Updates particular Visit object in SQL database
+            </summary>
+            <param name="id">Visit to be updated identifaction key</param>
+            <param name="visit">Updated Visit object which will replace existing Visit object in SQL database</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.PostVisit(WebAPI.DataModels.Visit)">
+            <summary>
+            Inserts new Visit object into SQL database
+            </summary>
+            <param name="visit">Visit to be inserted</param>
+            <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.DeleteVisit(System.Int32)">
+            <summary>
+            Deletes existing Visit object in SQL database
+            </summary>
+            <param name="id">Identification key of Visit to be deleted</param>
+            <returns>Http request status</returns>
         </member>
     </members>
 </doc>
