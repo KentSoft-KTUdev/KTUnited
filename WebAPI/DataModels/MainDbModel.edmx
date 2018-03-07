@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MainDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="MainDbModelStoreContainer">
+    <EntitySet Name="ResidentSet" EntityType="MainDbModel.Store.ResidentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoomSet" EntityType="MainDbModel.Store.RoomSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GuestSet" EntityType="MainDbModel.Store.GuestSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DormitorySet" EntityType="MainDbModel.Store.DormitorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="VisitSet" EntityType="MainDbModel.Store.VisitSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="RoomResident" Association="MainDbModel.Store.RoomResident">
+      <End Role="Room" EntitySet="RoomSet" />
+      <End Role="Resident" EntitySet="ResidentSet" />
+    </AssociationSet>
+    <AssociationSet Name="DormitoryResident" Association="MainDbModel.Store.DormitoryResident">
+      <End Role="Dormitory" EntitySet="DormitorySet" />
+      <End Role="Resident" EntitySet="ResidentSet" />
+    </AssociationSet>
+    <AssociationSet Name="VisitGuest" Association="MainDbModel.Store.VisitGuest">
+      <End Role="Visit" EntitySet="VisitSet" />
+      <End Role="Guest" EntitySet="GuestSet" />
+    </AssociationSet>
+    <AssociationSet Name="ResidentVisit" Association="MainDbModel.Store.ResidentVisit">
+      <End Role="Resident" EntitySet="ResidentSet" />
+      <End Role="Visit" EntitySet="VisitSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="ResidentSet">
+    <Key>
+      <PropertyRef Name="PersonalCode" />
+    </Key>
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="Room_Number" Type="int" Nullable="false" />
+    <Property Name="Dormitory_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomSet">
+    <Key>
+      <PropertyRef Name="Number" />
+    </Key>
+    <Property Name="Number" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GuestSet">
+    <Key>
+      <PropertyRef Name="PersonalCode" />
+    </Key>
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="VisitID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DormitorySet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VisitSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="VisitRegDateTime" Type="datetime" Nullable="false" />
+    <Property Name="IsOver" Type="bit" Nullable="false" />
+    <Property Name="VisitEndDateTime" Type="datetime" Nullable="false" />
+    <Property Name="ResidentPersonalCode" Type="bigint" Nullable="false" />
+  </EntityType>
+  <Association Name="RoomResident">
+    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="1" />
+    <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="Number" />
+      </Principal>
+      <Dependent Role="Resident">
+        <PropertyRef Name="Room_Number" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DormitoryResident">
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Resident">
+        <PropertyRef Name="Dormitory_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="VisitGuest">
+    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="1" />
+    <End Role="Guest" Type="MainDbModel.Store.GuestSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Visit">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Guest">
+        <PropertyRef Name="VisitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ResidentVisit">
+    <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="1" />
+    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Resident">
+        <PropertyRef Name="PersonalCode" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="ResidentPersonalCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="MainDbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="MainDbModelContainer1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ResidentSet" EntityType="MainDbModel.Resident" />
+          <EntitySet Name="RoomSet" EntityType="MainDbModel.Room" />
+          <AssociationSet Name="RoomResident" Association="MainDbModel.RoomResident">
+            <End Role="Room" EntitySet="RoomSet" />
+            <End Role="Resident" EntitySet="ResidentSet" />
+          </AssociationSet>
+          <EntitySet Name="GuestSet" EntityType="MainDbModel.Guest" />
+          <EntitySet Name="DormitorySet" EntityType="MainDbModel.Dormitory" />
+          <AssociationSet Name="DormitoryResident" Association="MainDbModel.DormitoryResident">
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+            <End Role="Resident" EntitySet="ResidentSet" />
+          </AssociationSet>
+          <EntitySet Name="VisitSet" EntityType="MainDbModel.Visit" />
+          <AssociationSet Name="VisitGuest" Association="MainDbModel.VisitGuest">
+            <End Role="Visit" EntitySet="VisitSet" />
+            <End Role="Guest" EntitySet="GuestSet" />
+          </AssociationSet>
+          <AssociationSet Name="ResidentVisit" Association="MainDbModel.ResidentVisit">
+            <End Role="Resident" EntitySet="ResidentSet" />
+            <End Role="Visit" EntitySet="VisitSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Resident">
+          <Key>
+            <PropertyRef Name="PersonalCode" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <NavigationProperty Name="Room" Relationship="MainDbModel.RoomResident" FromRole="Resident" ToRole="Room" />
+          <Property Name="PersonalCode" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryResident" FromRole="Resident" ToRole="Dormitory" />
+          <NavigationProperty Name="Visit" Relationship="MainDbModel.ResidentVisit" FromRole="Resident" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Number" />
+          </Key>
+          <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Resident" Relationship="MainDbModel.RoomResident" FromRole="Room" ToRole="Resident" />
+        </EntityType>
+        <Association Name="RoomResident">
+          <End Type="MainDbModel.Room" Role="Room" Multiplicity="1" />
+          <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="PersonalCode" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <Property Name="PersonalCode" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Visit" Relationship="MainDbModel.VisitGuest" FromRole="Guest" ToRole="Visit" />
+          <Property Name="VisitID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dormitory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Adress" Type="String" Nullable="false" />
+          <NavigationProperty Name="Resident" Relationship="MainDbModel.DormitoryResident" FromRole="Dormitory" ToRole="Resident" />
+        </EntityType>
+        <Association Name="DormitoryResident">
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Visit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VisitRegDateTime" Type="DateTime" Nullable="false" />
+          <Property Name="IsOver" Type="Boolean" Nullable="false" />
+          <Property Name="VisitEndDateTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Guest" Relationship="MainDbModel.VisitGuest" FromRole="Visit" ToRole="Guest" />
+          <NavigationProperty Name="Resident" Relationship="MainDbModel.ResidentVisit" FromRole="Visit" ToRole="Resident" />
+          <Property Name="ResidentPersonalCode" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="VisitGuest">
+          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="1" />
+          <End Type="MainDbModel.Guest" Role="Guest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Visit">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="VisitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ResidentVisit">
+          <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="1" />
+          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resident">
+              <PropertyRef Name="PersonalCode" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="ResidentPersonalCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MainDbModelStoreContainer" CdmEntityContainer="MainDbModelContainer1">
+    <EntitySetMapping Name="ResidentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Resident)">
+        <MappingFragment StoreEntitySet="ResidentSet">
+          <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Room)">
+        <MappingFragment StoreEntitySet="RoomSet">
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GuestSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Guest)">
+        <MappingFragment StoreEntitySet="GuestSet">
+          <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="VisitID" ColumnName="VisitID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DormitorySet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Dormitory)">
+        <MappingFragment StoreEntitySet="DormitorySet">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Adress" ColumnName="Adress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VisitSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Visit)">
+        <MappingFragment StoreEntitySet="VisitSet">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="VisitRegDateTime" ColumnName="VisitRegDateTime" />
+          <ScalarProperty Name="IsOver" ColumnName="IsOver" />
+          <ScalarProperty Name="VisitEndDateTime" ColumnName="VisitEndDateTime" />
+          <ScalarProperty Name="ResidentPersonalCode" ColumnName="ResidentPersonalCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RoomResident" TypeName="MainDbModel.RoomResident" StoreEntitySet="ResidentSet">
+      <EndProperty Name="Room">
+        <ScalarProperty Name="Number" ColumnName="Room_Number" />
+      </EndProperty>
+      <EndProperty Name="Resident">
+        <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DormitoryResident" TypeName="MainDbModel.DormitoryResident" StoreEntitySet="ResidentSet">
+      <EndProperty Name="Dormitory">
+        <ScalarProperty Name="ID" ColumnName="Dormitory_ID" />
+      </EndProperty>
+      <EndProperty Name="Resident">
+        <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
