@@ -145,6 +145,28 @@
             <End Role="Resident" EntitySet="ResidentSet" />
             <End Role="Visit" EntitySet="VisitSet" />
           </AssociationSet>
+          <AssociationSet Name="DormitoryRoom" Association="MainDbModel.DormitoryRoom">
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+            <End Role="Room" EntitySet="RoomSet" />
+          </AssociationSet>
+          <EntitySet Name="GuardSet" EntityType="MainDbModel.Guard" />
+          <AssociationSet Name="GuardDormitory" Association="MainDbModel.GuardDormitory">
+            <End Role="Guard" EntitySet="GuardSet" />
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+          </AssociationSet>
+          <AssociationSet Name="GuardVisit" Association="MainDbModel.GuardVisit">
+            <End Role="Guard" EntitySet="GuardSet" />
+            <End Role="Visit" EntitySet="VisitSet" />
+          </AssociationSet>
+          <EntitySet Name="AdministratorSet" EntityType="MainDbModel.Administrator" />
+          <AssociationSet Name="AdministratorDormitory" Association="MainDbModel.AdministratorDormitory">
+            <End Role="Administrator" EntitySet="AdministratorSet" />
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+          </AssociationSet>
+          <AssociationSet Name="DormitoryVisit" Association="MainDbModel.DormitoryVisit">
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+            <End Role="Visit" EntitySet="VisitSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Resident">
           <Key>
@@ -163,6 +185,8 @@
           </Key>
           <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.RoomResident" FromRole="Room" ToRole="Resident" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryRoom" FromRole="Room" ToRole="Dormitory" />
+          <Property Name="DormitoryID" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="RoomResident">
           <End Type="MainDbModel.Room" Role="Room" Multiplicity="1" />
@@ -186,6 +210,10 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Adress" Type="String" Nullable="false" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.DormitoryResident" FromRole="Dormitory" ToRole="Resident" />
+          <NavigationProperty Name="Room" Relationship="MainDbModel.DormitoryRoom" FromRole="Dormitory" ToRole="Room" />
+          <NavigationProperty Name="Guard" Relationship="MainDbModel.GuardDormitory" FromRole="Dormitory" ToRole="Guard" />
+          <NavigationProperty Name="Administrator" Relationship="MainDbModel.AdministratorDormitory" FromRole="Dormitory" ToRole="Administrator" />
+          <NavigationProperty Name="Visit" Relationship="MainDbModel.DormitoryVisit" FromRole="Dormitory" ToRole="Visit" />
         </EntityType>
         <Association Name="DormitoryResident">
           <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
@@ -202,6 +230,10 @@
           <NavigationProperty Name="Guest" Relationship="MainDbModel.VisitGuest" FromRole="Visit" ToRole="Guest" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.ResidentVisit" FromRole="Visit" ToRole="Resident" />
           <Property Name="ResidentPersonalCode" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Guard" Relationship="MainDbModel.GuardVisit" FromRole="Visit" ToRole="Guard" />
+          <Property Name="GuardPersonalCode" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryVisit" FromRole="Visit" ToRole="Dormitory" />
+          <Property Name="DormitoryID" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="VisitGuest">
           <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="1" />
@@ -224,6 +256,69 @@
             </Principal>
             <Dependent Role="Visit">
               <PropertyRef Name="ResidentPersonalCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DormitoryRoom">
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <End Type="MainDbModel.Room" Role="Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dormitory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="DormitoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Guard">
+          <Key>
+            <PropertyRef Name="PersonalCode" />
+          </Key>
+          <Property Name="PersonalCode" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.GuardDormitory" FromRole="Guard" ToRole="Dormitory" />
+          <NavigationProperty Name="Visit" Relationship="MainDbModel.GuardVisit" FromRole="Guard" ToRole="Visit" />
+        </EntityType>
+        <Association Name="GuardDormitory">
+          <End Type="MainDbModel.Guard" Role="Guard" Multiplicity="*" />
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+        </Association>
+        <Association Name="GuardVisit">
+          <End Type="MainDbModel.Guard" Role="Guard" Multiplicity="1" />
+          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guard">
+              <PropertyRef Name="PersonalCode" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="GuardPersonalCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="PersonalCode" />
+          </Key>
+          <Property Name="PersonalCode" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.AdministratorDormitory" FromRole="Administrator" ToRole="Dormitory" />
+        </EntityType>
+        <Association Name="AdministratorDormitory">
+          <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="1" />
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+        </Association>
+        <Association Name="DormitoryVisit">
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dormitory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="DormitoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

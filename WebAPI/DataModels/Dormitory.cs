@@ -18,6 +18,8 @@ namespace WebAPI.DataModels
         public Dormitory()
         {
             this.Resident = new HashSet<Resident>();
+            this.Room = new HashSet<Room>();
+            this.Guard = new HashSet<Guard>();
         }
     
         public int ID { get; set; }
@@ -26,5 +28,10 @@ namespace WebAPI.DataModels
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Resident> Resident { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Room> Room { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Guard> Guard { get; set; }
+        public virtual Administrator Administrator { get; set; }
     }
 }

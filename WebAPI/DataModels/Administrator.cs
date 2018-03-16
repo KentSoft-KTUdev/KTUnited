@@ -12,19 +12,12 @@ namespace WebAPI.DataModels
     using System;
     using System.Collections.Generic;
     
-    public partial class Room
+    public partial class Administrator
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Room()
-        {
-            this.Resident = new HashSet<Resident>();
-        }
+        public long PersonalCode { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
     
-        public int Number { get; set; }
-        public int DormitoryID { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Resident> Resident { get; set; }
         public virtual Dormitory Dormitory { get; set; }
     }
 }

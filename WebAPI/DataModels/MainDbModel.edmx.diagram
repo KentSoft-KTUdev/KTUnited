@@ -14,6 +14,13 @@
         <EntityTypeShape EntityType="MainDbModel.Visit" Width="1.5" PointX="4.625" PointY="0.5" />
         <AssociationConnector Association="MainDbModel.VisitGuest" />
         <AssociationConnector Association="MainDbModel.ResidentVisit" />
+        <AssociationConnector Association="MainDbModel.DormitoryRoom" />
+        <EntityTypeShape EntityType="MainDbModel.Guard" Width="1.5" PointX="2.75" PointY="3.75" />
+        <AssociationConnector Association="MainDbModel.GuardDormitory" />
+        <AssociationConnector Association="MainDbModel.GuardVisit" />
+        <EntityTypeShape EntityType="MainDbModel.Administrator" Width="1.5" PointX="7.875" PointY="0.5" />
+        <AssociationConnector Association="MainDbModel.AdministratorDormitory" />
+        <AssociationConnector Association="MainDbModel.DormitoryVisit" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

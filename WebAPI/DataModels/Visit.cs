@@ -25,9 +25,11 @@ namespace WebAPI.DataModels
         public bool IsOver { get; set; }
         public System.DateTime VisitEndDateTime { get; set; }
         public long ResidentPersonalCode { get; set; }
+        public long GuardPersonalCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Guest> Guest { get; set; }
         public virtual Resident Resident { get; set; }
+        public virtual Guard Guard { get; set; }
     }
 }
