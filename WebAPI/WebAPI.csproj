@@ -250,7 +250,13 @@
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
+    <Compile Include="DataModels\Administrator.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModels\Dormitory.cs">
+      <DependentUpon>MainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModels\Guard.cs">
       <DependentUpon>MainDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModels\Guest.cs">
