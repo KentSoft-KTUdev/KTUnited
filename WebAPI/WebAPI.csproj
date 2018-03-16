@@ -245,6 +245,7 @@
     <Compile Include="Controllers\DormitoriesController.cs" />
     <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\ResidentsController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
@@ -297,6 +298,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\Arnas.jpg" />
     <Content Include="Content\img\Arturas.jpg" />
+    <Content Include="Content\img\brand.png" />
+    <Content Include="Content\img\brandTextOnly.png" />
     <Content Include="Content\img\Dalius.jpg" />
     <Content Include="Content\img\Edvardas.jpg" />
     <Content Include="Content\img\Mindaugas.jpg" />
@@ -372,6 +375,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\Shared\_WebAppLayout.cshtml" />
+    <Content Include="Views\Main\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -389,7 +394,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
