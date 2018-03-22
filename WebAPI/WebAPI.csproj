@@ -246,6 +246,7 @@
     <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\ResidentController.cs" />
     <Compile Include="Controllers\ResidentsController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
@@ -383,6 +384,10 @@
     <Content Include="Views\Team\Index.cshtml" />
     <Content Include="Views\Shared\_WebAppLayout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
+    <Content Include="Views\Resident\Index.cshtml" />
+    <Content Include="Views\Resident\RegisterForm.cshtml" />
+    <Content Include="Views\Resident\RegisterGuest.cshtml" />
+    <Content Include="Views\Resident\Visits.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
