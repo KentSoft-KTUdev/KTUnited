@@ -2,3 +2,21 @@
     ViewBag.Title = "User web app";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
+<style>
+    body{
+        text-align: center;
+    }
+
+</style>
+
+<body>
+    <h1>Welcome</h1>
+    <p>Sign in as..</p>
+
+    <div class="btn-group-vertical" data-toggle="buttons">
+        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Resident")'" >Resident</button>
+        <button type="button" class="btn btn-secondary">Guard</button>
+        <button type="button" class="btn btn-secondary">Guest</button>
+        <button type="button" class="btn btn-secondary">Admin</button>
+    </div>
+</body>
