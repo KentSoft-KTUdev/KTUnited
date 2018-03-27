@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebAPI.DataModels;
+using WebAPI.Data;
 
 namespace WebAPI.Controllers
 {
@@ -17,6 +19,8 @@ namespace WebAPI.Controllers
         // sukurkit resident forma (ji bus naudojama sukurimui residento arba modifikacijai)
         public ActionResult ResidentForm()
         {
+            RoomRepository roomRepository = new RoomRepository();
+            roomRepository.GetAll();
             return View();
         }
 

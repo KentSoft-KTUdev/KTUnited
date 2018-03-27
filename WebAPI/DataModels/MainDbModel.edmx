@@ -285,6 +285,7 @@
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="Number" />
+            <PropertyRef Name="DormitoryID" />
           </Key>
           <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.RoomResident" FromRole="Room" ToRole="Resident" />
