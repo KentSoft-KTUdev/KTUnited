@@ -26,11 +26,11 @@ namespace WebAPI.DataModels
         }
     
         public virtual DbSet<Resident> ResidentSet { get; set; }
-        public virtual DbSet<Room> RoomSet { get; set; }
         public virtual DbSet<Guest> GuestSet { get; set; }
         public virtual DbSet<Dormitory> DormitorySet { get; set; }
         public virtual DbSet<Visit> VisitSet { get; set; }
         public virtual DbSet<Guard> GuardSet { get; set; }
         public virtual DbSet<Administrator> AdministratorSet { get; set; }
+        public virtual DbSet<Room> RoomSet { get; set; }
     }
 }

@@ -7,16 +7,12 @@
     <Schema Namespace="MainDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="MainDbModelStoreContainer">
     <EntitySet Name="ResidentSet" EntityType="MainDbModel.Store.ResidentSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="RoomSet" EntityType="MainDbModel.Store.RoomSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GuestSet" EntityType="MainDbModel.Store.GuestSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DormitorySet" EntityType="MainDbModel.Store.DormitorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="VisitSet" EntityType="MainDbModel.Store.VisitSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GuardSet" EntityType="MainDbModel.Store.GuardSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="AdministratorSet" EntityType="MainDbModel.Store.AdministratorSet" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="RoomResident" Association="MainDbModel.Store.RoomResident">
-      <End Role="Room" EntitySet="RoomSet" />
-      <End Role="Resident" EntitySet="ResidentSet" />
-    </AssociationSet>
+    <EntitySet Name="RoomSet" EntityType="MainDbModel.Store.RoomSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="DormitoryResident" Association="MainDbModel.Store.DormitoryResident">
       <End Role="Dormitory" EntitySet="DormitorySet" />
       <End Role="Resident" EntitySet="ResidentSet" />
@@ -28,10 +24,6 @@
     <AssociationSet Name="ResidentVisit" Association="MainDbModel.Store.ResidentVisit">
       <End Role="Resident" EntitySet="ResidentSet" />
       <End Role="Visit" EntitySet="VisitSet" />
-    </AssociationSet>
-    <AssociationSet Name="DormitoryRoom" Association="MainDbModel.Store.DormitoryRoom">
-      <End Role="Dormitory" EntitySet="DormitorySet" />
-      <End Role="Room" EntitySet="RoomSet" />
     </AssociationSet>
     <AssociationSet Name="GuardDormitory" Association="MainDbModel.Store.GuardDormitory">
       <End Role="Guard" EntitySet="GuardSet" />
@@ -49,6 +41,14 @@
       <End Role="Dormitory" EntitySet="DormitorySet" />
       <End Role="Visit" EntitySet="VisitSet" />
     </AssociationSet>
+    <AssociationSet Name="RoomDormitory" Association="MainDbModel.Store.RoomDormitory">
+      <End Role="Room" EntitySet="RoomSet" />
+      <End Role="Dormitory" EntitySet="DormitorySet" />
+    </AssociationSet>
+    <AssociationSet Name="RoomResident" Association="MainDbModel.Store.RoomResident">
+      <End Role="Room" EntitySet="RoomSet" />
+      <End Role="Resident" EntitySet="ResidentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ResidentSet">
     <Key>
@@ -57,15 +57,8 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PersonalCode" Type="bigint" Nullable="false" />
-    <Property Name="Room_Number" Type="int" Nullable="false" />
+    <Property Name="RoomID" Type="int" Nullable="false" />
     <Property Name="Dormitory_ID" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="RoomSet">
-    <Key>
-      <PropertyRef Name="Number" />
-    </Key>
-    <Property Name="Number" Type="int" Nullable="false" />
-    <Property Name="DormitoryID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GuestSet">
     <Key>
@@ -114,18 +107,14 @@
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Dormitory_ID" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="RoomResident">
-    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="1" />
-    <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Room">
-        <PropertyRef Name="Number" />
-      </Principal>
-      <Dependent Role="Resident">
-        <PropertyRef Name="Room_Number" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
+  <EntityType Name="RoomSet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DormitoryID" Type="int" Nullable="false" />
+    <Property Name="Number" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="DormitoryResident">
     <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
     <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="*" />
@@ -159,18 +148,6 @@
       </Principal>
       <Dependent Role="Visit">
         <PropertyRef Name="ResidentPersonalCode" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="DormitoryRoom">
-    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
-    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Dormitory">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Room">
-        <PropertyRef Name="DormitoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -222,17 +199,36 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="RoomDormitory">
+    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="*" />
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="DormitoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomResident">
+    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="1" />
+    <End Role="Resident" Type="MainDbModel.Store.ResidentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Resident">
+        <PropertyRef Name="RoomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="MainDbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="MainDbModelContainer1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ResidentSet" EntityType="MainDbModel.Resident" />
-          <EntitySet Name="RoomSet" EntityType="MainDbModel.Room" />
-          <AssociationSet Name="RoomResident" Association="MainDbModel.RoomResident">
-            <End Role="Room" EntitySet="RoomSet" />
-            <End Role="Resident" EntitySet="ResidentSet" />
-          </AssociationSet>
           <EntitySet Name="GuestSet" EntityType="MainDbModel.Guest" />
           <EntitySet Name="DormitorySet" EntityType="MainDbModel.Dormitory" />
           <AssociationSet Name="DormitoryResident" Association="MainDbModel.DormitoryResident">
@@ -247,10 +243,6 @@
           <AssociationSet Name="ResidentVisit" Association="MainDbModel.ResidentVisit">
             <End Role="Resident" EntitySet="ResidentSet" />
             <End Role="Visit" EntitySet="VisitSet" />
-          </AssociationSet>
-          <AssociationSet Name="DormitoryRoom" Association="MainDbModel.DormitoryRoom">
-            <End Role="Dormitory" EntitySet="DormitorySet" />
-            <End Role="Room" EntitySet="RoomSet" />
           </AssociationSet>
           <EntitySet Name="GuardSet" EntityType="MainDbModel.Guard" />
           <AssociationSet Name="GuardDormitory" Association="MainDbModel.GuardDormitory">
@@ -270,6 +262,15 @@
             <End Role="Dormitory" EntitySet="DormitorySet" />
             <End Role="Visit" EntitySet="VisitSet" />
           </AssociationSet>
+          <EntitySet Name="RoomSet" EntityType="MainDbModel.Room" />
+          <AssociationSet Name="RoomDormitory" Association="MainDbModel.RoomDormitory">
+            <End Role="Room" EntitySet="RoomSet" />
+            <End Role="Dormitory" EntitySet="DormitorySet" />
+          </AssociationSet>
+          <AssociationSet Name="RoomResident" Association="MainDbModel.RoomResident">
+            <End Role="Room" EntitySet="RoomSet" />
+            <End Role="Resident" EntitySet="ResidentSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Resident">
           <Key>
@@ -277,25 +278,12 @@
           </Key>
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Surname" Type="String" Nullable="false" />
-          <NavigationProperty Name="Room" Relationship="MainDbModel.RoomResident" FromRole="Resident" ToRole="Room" />
           <Property Name="PersonalCode" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryResident" FromRole="Resident" ToRole="Dormitory" />
           <NavigationProperty Name="Visit" Relationship="MainDbModel.ResidentVisit" FromRole="Resident" ToRole="Visit" />
+          <NavigationProperty Name="Room" Relationship="MainDbModel.RoomResident" FromRole="Resident" ToRole="Room" />
+          <Property Name="RoomID" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Room">
-          <Key>
-            <PropertyRef Name="Number" />
-            <PropertyRef Name="DormitoryID" />
-          </Key>
-          <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="Resident" Relationship="MainDbModel.RoomResident" FromRole="Room" ToRole="Resident" />
-          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryRoom" FromRole="Room" ToRole="Dormitory" />
-          <Property Name="DormitoryID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <Association Name="RoomResident">
-          <End Type="MainDbModel.Room" Role="Room" Multiplicity="1" />
-          <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="*" />
-        </Association>
         <EntityType Name="Guest">
           <Key>
             <PropertyRef Name="PersonalCode" />
@@ -314,10 +302,10 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Adress" Type="String" Nullable="false" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.DormitoryResident" FromRole="Dormitory" ToRole="Resident" />
-          <NavigationProperty Name="Room" Relationship="MainDbModel.DormitoryRoom" FromRole="Dormitory" ToRole="Room" />
           <NavigationProperty Name="Guard" Relationship="MainDbModel.GuardDormitory" FromRole="Dormitory" ToRole="Guard" />
           <NavigationProperty Name="Administrator" Relationship="MainDbModel.AdministratorDormitory" FromRole="Dormitory" ToRole="Administrator" />
           <NavigationProperty Name="Visit" Relationship="MainDbModel.DormitoryVisit" FromRole="Dormitory" ToRole="Visit" />
+          <NavigationProperty Name="Room" Relationship="MainDbModel.RoomDormitory" FromRole="Dormitory" ToRole="Room" />
         </EntityType>
         <Association Name="DormitoryResident">
           <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
@@ -360,18 +348,6 @@
             </Principal>
             <Dependent Role="Visit">
               <PropertyRef Name="ResidentPersonalCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="DormitoryRoom">
-          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
-          <End Type="MainDbModel.Room" Role="Room" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dormitory">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Room">
-              <PropertyRef Name="DormitoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -426,6 +402,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Dormitory" Relationship="MainDbModel.RoomDormitory" FromRole="Room" ToRole="Dormitory" />
+          <Property Name="DormitoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Resident" Relationship="MainDbModel.RoomResident" FromRole="Room" ToRole="Resident" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RoomDormitory">
+          <End Type="MainDbModel.Room" Role="Room" Multiplicity="*" />
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Dormitory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="DormitoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RoomResident">
+          <End Type="MainDbModel.Room" Role="Room" Multiplicity="1" />
+          <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Resident">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -438,14 +448,7 @@
           <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="RoomSet">
-      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Room)">
-        <MappingFragment StoreEntitySet="RoomSet">
-          <ScalarProperty Name="Number" ColumnName="Number" />
-          <ScalarProperty Name="DormitoryID" ColumnName="DormitoryID" />
+          <ScalarProperty Name="RoomID" ColumnName="RoomID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -499,14 +502,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="RoomResident" TypeName="MainDbModel.RoomResident" StoreEntitySet="ResidentSet">
-      <EndProperty Name="Room">
-        <ScalarProperty Name="Number" ColumnName="Room_Number" />
-      </EndProperty>
-      <EndProperty Name="Resident">
-        <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="RoomSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Room)">
+        <MappingFragment StoreEntitySet="RoomSet">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DormitoryID" ColumnName="DormitoryID" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="DormitoryResident" TypeName="MainDbModel.DormitoryResident" StoreEntitySet="ResidentSet">
       <EndProperty Name="Dormitory">
         <ScalarProperty Name="ID" ColumnName="Dormitory_ID" />

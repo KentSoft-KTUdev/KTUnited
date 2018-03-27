@@ -20,11 +20,12 @@ namespace WebAPI.DataModels
             this.Resident = new HashSet<Resident>();
         }
     
-        public int Number { get; set; }
+        public int ID { get; set; }
         public int DormitoryID { get; set; }
+        public int Number { get; set; }
     
+        public virtual Dormitory Dormitory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Resident> Resident { get; set; }
-        public virtual Dormitory Dormitory { get; set; }
     }
 }

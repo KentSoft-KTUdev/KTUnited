@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/27/2018 11:20:54
+-- Date Created: 03/27/2018 14:57:22
 -- Generated from EDMX file: C:\Users\edvala\source\repos\KTUnited\WebAPI\DataModels\MainDbModel.edmx
 -- --------------------------------------------------
 
@@ -17,9 +17,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_RoomResident]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ResidentSet] DROP CONSTRAINT [FK_RoomResident];
-GO
 IF OBJECT_ID(N'[dbo].[FK_DormitoryResident]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ResidentSet] DROP CONSTRAINT [FK_DormitoryResident];
 GO
@@ -28,9 +25,6 @@ IF OBJECT_ID(N'[dbo].[FK_VisitGuest]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ResidentVisit]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VisitSet] DROP CONSTRAINT [FK_ResidentVisit];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DormitoryRoom]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RoomSet] DROP CONSTRAINT [FK_DormitoryRoom];
 GO
 IF OBJECT_ID(N'[dbo].[FK_GuardDormitory]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GuardSet] DROP CONSTRAINT [FK_GuardDormitory];
@@ -44,6 +38,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DormitoryVisit]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VisitSet] DROP CONSTRAINT [FK_DormitoryVisit];
 GO
+IF OBJECT_ID(N'[dbo].[FK_RoomDormitory]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RoomSet] DROP CONSTRAINT [FK_RoomDormitory];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoomResident]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ResidentSet] DROP CONSTRAINT [FK_RoomResident];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -51,9 +51,6 @@ GO
 
 IF OBJECT_ID(N'[dbo].[ResidentSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ResidentSet];
-GO
-IF OBJECT_ID(N'[dbo].[RoomSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[RoomSet];
 GO
 IF OBJECT_ID(N'[dbo].[GuestSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GuestSet];
@@ -70,6 +67,9 @@ GO
 IF OBJECT_ID(N'[dbo].[AdministratorSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AdministratorSet];
 GO
+IF OBJECT_ID(N'[dbo].[RoomSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RoomSet];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -80,15 +80,8 @@ CREATE TABLE [dbo].[ResidentSet] (
     [Name] nvarchar(max)  NOT NULL,
     [Surname] nvarchar(max)  NOT NULL,
     [PersonalCode] bigint  NOT NULL,
-    [Room_Number] int  NOT NULL,
+    [RoomID] int  NOT NULL,
     [Dormitory_ID] int  NOT NULL
-);
-GO
-
--- Creating table 'RoomSet'
-CREATE TABLE [dbo].[RoomSet] (
-    [Number] int  NOT NULL,
-    [DormitoryID] int  NOT NULL
 );
 GO
 
@@ -139,6 +132,14 @@ CREATE TABLE [dbo].[AdministratorSet] (
 );
 GO
 
+-- Creating table 'RoomSet'
+CREATE TABLE [dbo].[RoomSet] (
+    [ID] int IDENTITY(1,1) NOT NULL,
+    [DormitoryID] int  NOT NULL,
+    [Number] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -147,12 +148,6 @@ GO
 ALTER TABLE [dbo].[ResidentSet]
 ADD CONSTRAINT [PK_ResidentSet]
     PRIMARY KEY CLUSTERED ([PersonalCode] ASC);
-GO
-
--- Creating primary key on [Number] in table 'RoomSet'
-ALTER TABLE [dbo].[RoomSet]
-ADD CONSTRAINT [PK_RoomSet]
-    PRIMARY KEY CLUSTERED ([Number] ASC);
 GO
 
 -- Creating primary key on [PersonalCode] in table 'GuestSet'
@@ -185,24 +180,15 @@ ADD CONSTRAINT [PK_AdministratorSet]
     PRIMARY KEY CLUSTERED ([PersonalCode] ASC);
 GO
 
+-- Creating primary key on [ID] in table 'RoomSet'
+ALTER TABLE [dbo].[RoomSet]
+ADD CONSTRAINT [PK_RoomSet]
+    PRIMARY KEY CLUSTERED ([ID] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- Creating foreign key on [Room_Number] in table 'ResidentSet'
-ALTER TABLE [dbo].[ResidentSet]
-ADD CONSTRAINT [FK_RoomResident]
-    FOREIGN KEY ([Room_Number])
-    REFERENCES [dbo].[RoomSet]
-        ([Number])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_RoomResident'
-CREATE INDEX [IX_FK_RoomResident]
-ON [dbo].[ResidentSet]
-    ([Room_Number]);
-GO
 
 -- Creating foreign key on [Dormitory_ID] in table 'ResidentSet'
 ALTER TABLE [dbo].[ResidentSet]
@@ -247,21 +233,6 @@ GO
 CREATE INDEX [IX_FK_ResidentVisit]
 ON [dbo].[VisitSet]
     ([ResidentPersonalCode]);
-GO
-
--- Creating foreign key on [DormitoryID] in table 'RoomSet'
-ALTER TABLE [dbo].[RoomSet]
-ADD CONSTRAINT [FK_DormitoryRoom]
-    FOREIGN KEY ([DormitoryID])
-    REFERENCES [dbo].[DormitorySet]
-        ([ID])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DormitoryRoom'
-CREATE INDEX [IX_FK_DormitoryRoom]
-ON [dbo].[RoomSet]
-    ([DormitoryID]);
 GO
 
 -- Creating foreign key on [Dormitory_ID] in table 'GuardSet'
@@ -322,6 +293,36 @@ GO
 CREATE INDEX [IX_FK_DormitoryVisit]
 ON [dbo].[VisitSet]
     ([DormitoryID]);
+GO
+
+-- Creating foreign key on [DormitoryID] in table 'RoomSet'
+ALTER TABLE [dbo].[RoomSet]
+ADD CONSTRAINT [FK_RoomDormitory]
+    FOREIGN KEY ([DormitoryID])
+    REFERENCES [dbo].[DormitorySet]
+        ([ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoomDormitory'
+CREATE INDEX [IX_FK_RoomDormitory]
+ON [dbo].[RoomSet]
+    ([DormitoryID]);
+GO
+
+-- Creating foreign key on [RoomID] in table 'ResidentSet'
+ALTER TABLE [dbo].[ResidentSet]
+ADD CONSTRAINT [FK_RoomResident]
+    FOREIGN KEY ([RoomID])
+    REFERENCES [dbo].[RoomSet]
+        ([ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoomResident'
+CREATE INDEX [IX_FK_RoomResident]
+ON [dbo].[ResidentSet]
+    ([RoomID]);
 GO
 
 -- --------------------------------------------------
