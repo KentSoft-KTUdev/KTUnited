@@ -11,6 +11,8 @@
     <EntitySet Name="GuestSet" EntityType="MainDbModel.Store.GuestSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DormitorySet" EntityType="MainDbModel.Store.DormitorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="VisitSet" EntityType="MainDbModel.Store.VisitSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GuardSet" EntityType="MainDbModel.Store.GuardSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdministratorSet" EntityType="MainDbModel.Store.AdministratorSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="RoomResident" Association="MainDbModel.Store.RoomResident">
       <End Role="Room" EntitySet="RoomSet" />
       <End Role="Resident" EntitySet="ResidentSet" />
@@ -25,6 +27,26 @@
     </AssociationSet>
     <AssociationSet Name="ResidentVisit" Association="MainDbModel.Store.ResidentVisit">
       <End Role="Resident" EntitySet="ResidentSet" />
+      <End Role="Visit" EntitySet="VisitSet" />
+    </AssociationSet>
+    <AssociationSet Name="DormitoryRoom" Association="MainDbModel.Store.DormitoryRoom">
+      <End Role="Dormitory" EntitySet="DormitorySet" />
+      <End Role="Room" EntitySet="RoomSet" />
+    </AssociationSet>
+    <AssociationSet Name="GuardDormitory" Association="MainDbModel.Store.GuardDormitory">
+      <End Role="Guard" EntitySet="GuardSet" />
+      <End Role="Dormitory" EntitySet="DormitorySet" />
+    </AssociationSet>
+    <AssociationSet Name="GuardVisit" Association="MainDbModel.Store.GuardVisit">
+      <End Role="Guard" EntitySet="GuardSet" />
+      <End Role="Visit" EntitySet="VisitSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdministratorDormitory" Association="MainDbModel.Store.AdministratorDormitory">
+      <End Role="Administrator" EntitySet="AdministratorSet" />
+      <End Role="Dormitory" EntitySet="DormitorySet" />
+    </AssociationSet>
+    <AssociationSet Name="DormitoryVisit" Association="MainDbModel.Store.DormitoryVisit">
+      <End Role="Dormitory" EntitySet="DormitorySet" />
       <End Role="Visit" EntitySet="VisitSet" />
     </AssociationSet>
   </EntityContainer>
@@ -43,6 +65,7 @@
       <PropertyRef Name="Number" />
     </Key>
     <Property Name="Number" Type="int" Nullable="false" />
+    <Property Name="DormitoryID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GuestSet">
     <Key>
@@ -70,6 +93,26 @@
     <Property Name="IsOver" Type="bit" Nullable="false" />
     <Property Name="VisitEndDateTime" Type="datetime" Nullable="false" />
     <Property Name="ResidentPersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="GuardPersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="DormitoryID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GuardSet">
+    <Key>
+      <PropertyRef Name="PersonalCode" />
+    </Key>
+    <Property Name="PersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Dormitory_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdministratorSet">
+    <Key>
+      <PropertyRef Name="PersonalCode" />
+    </Key>
+    <Property Name="PersonalCode" Type="bigint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Dormitory_ID" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="RoomResident">
     <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="1" />
@@ -116,6 +159,66 @@
       </Principal>
       <Dependent Role="Visit">
         <PropertyRef Name="ResidentPersonalCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DormitoryRoom">
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <End Role="Room" Type="MainDbModel.Store.RoomSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="DormitoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GuardDormitory">
+    <End Role="Guard" Type="MainDbModel.Store.GuardSet" Multiplicity="*" />
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Guard">
+        <PropertyRef Name="Dormitory_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GuardVisit">
+    <End Role="Guard" Type="MainDbModel.Store.GuardSet" Multiplicity="1" />
+    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Guard">
+        <PropertyRef Name="PersonalCode" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="GuardPersonalCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdministratorDormitory">
+    <End Role="Administrator" Type="MainDbModel.Store.AdministratorSet" Multiplicity="*" />
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Administrator">
+        <PropertyRef Name="Dormitory_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DormitoryVisit">
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dormitory">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="DormitoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -341,6 +444,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Room)">
         <MappingFragment StoreEntitySet="RoomSet">
           <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="DormitoryID" ColumnName="DormitoryID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -371,6 +475,26 @@
           <ScalarProperty Name="IsOver" ColumnName="IsOver" />
           <ScalarProperty Name="VisitEndDateTime" ColumnName="VisitEndDateTime" />
           <ScalarProperty Name="ResidentPersonalCode" ColumnName="ResidentPersonalCode" />
+          <ScalarProperty Name="GuardPersonalCode" ColumnName="GuardPersonalCode" />
+          <ScalarProperty Name="DormitoryID" ColumnName="DormitoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GuardSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Guard)">
+        <MappingFragment StoreEntitySet="GuardSet">
+          <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdministratorSet">
+      <EntityTypeMapping TypeName="IsTypeOf(MainDbModel.Administrator)">
+        <MappingFragment StoreEntitySet="AdministratorSet">
+          <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -387,6 +511,22 @@
         <ScalarProperty Name="ID" ColumnName="Dormitory_ID" />
       </EndProperty>
       <EndProperty Name="Resident">
+        <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GuardDormitory" TypeName="MainDbModel.GuardDormitory" StoreEntitySet="GuardSet">
+      <EndProperty Name="Dormitory">
+        <ScalarProperty Name="ID" ColumnName="Dormitory_ID" />
+      </EndProperty>
+      <EndProperty Name="Guard">
+        <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="AdministratorDormitory" TypeName="MainDbModel.AdministratorDormitory" StoreEntitySet="AdministratorSet">
+      <EndProperty Name="Dormitory">
+        <ScalarProperty Name="ID" ColumnName="Dormitory_ID" />
+      </EndProperty>
+      <EndProperty Name="Administrator">
         <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
       </EndProperty>
     </AssociationSetMapping>
