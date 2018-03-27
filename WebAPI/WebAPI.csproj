@@ -385,7 +385,7 @@
     <Content Include="Views\Shared\_WebAppLayout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\Resident\Index.cshtml" />
-    <Content Include="Views\Resident\RegisterForm.cshtml" />
+    <Content Include="Views\Resident\ResidentForm.cshtml" />
     <Content Include="Views\Resident\RegisterGuest.cshtml" />
     <Content Include="Views\Resident\Visits.cshtml" />
   </ItemGroup>

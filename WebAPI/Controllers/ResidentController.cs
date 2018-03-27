@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
         }
 
         // sukurkit resident forma (ji bus naudojama sukurimui residento arba modifikacijai)
-        public ActionResult RegisterForm()
+        public ActionResult ResidentForm()
         {
             return View();
         }
