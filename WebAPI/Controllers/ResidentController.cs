@@ -32,9 +32,10 @@ namespace WebAPI.Controllers
             }
             else
             {
+                Dormitory.Add(new SelectListItem { Text = "", Value = "1" });
                 for (int i = 0; i < dormitories.Count(); i++)
                 {
-                    var temp = new SelectListItem { Text = dormitories[i].Name, Value = (i + 1).ToString() };
+                    var temp = new SelectListItem { Text = dormitories[i].Name, Value = (i + 2).ToString() };
                     Dormitory.Add(temp);
 
                 }
@@ -48,9 +49,10 @@ namespace WebAPI.Controllers
             }
             else
             {
+                Rooms.Add(new SelectListItem { Text = "", Value = "1" });
                 for (int i = 0; i < rooms.Count(); i++)
                 {
-                    var temp = new SelectListItem { Text = rooms[i].Number.ToString(), Value = (i + 1).ToString() };
+                    var temp = new SelectListItem { Text = rooms[i].Number.ToString(), Value = (i + 2).ToString() };
                     Rooms.Add(temp);
 
                 }
