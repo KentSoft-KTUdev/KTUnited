@@ -66,6 +66,31 @@ namespace WebAPI.Controllers
             return View();
         }
 
+        public ActionResult RegisterVisitedGuest()
+        {
+            #region ViewBag
+            //GuestRepository guestRepository = new GuestRepository();
+            //List<Guest> guest = guestRepository.GetAll();
+            int laikinasCount = 0;
+            List<SelectListItem> Guests = new List<SelectListItem>();
+            if (laikinasCount == 0)
+            {
+                Guests.Add(new SelectListItem { Text = "Pas jus niekas iki šiol nesilankė", Value = "1" });
+            }
+            else
+            {
+                for (int i = 0; i < laikinasCount; i++)
+                {
+                    //var temp = new SelectListItem { Text = Guest[i].Name, Value = (i + 1).ToString() };
+                    //Guests.Add(temp);
+
+                }
+            }
+            ViewBag.Guests = Guests;
+            #endregion
+            return View();
+        }
+
         // sukurkit kazka kas butu kaip to gyventojo vizitu sarasas
         public ActionResult Visits()
         {

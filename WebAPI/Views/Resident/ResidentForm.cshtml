@@ -23,14 +23,14 @@
     <label for="sel1">Select dormitory :</label>
     <div>
         @Html.DropDownList("ResidentController", (IEnumerable
-                   <SelectListItem>)ViewBag.Dormitory)
+                   <SelectListItem>)ViewBag.Dormitory, new {@class = "form-control"})
     </div>
     <br />
 
     <label for="sel1">Select room :</label>
     <div>
         @Html.DropDownList("ResidentController", (IEnumerable
-                        <SelectListItem>)ViewBag.Rooms)
+                        <SelectListItem>)ViewBag.Rooms, new {@class = "form-control"})
     </div>
     <br />
 
