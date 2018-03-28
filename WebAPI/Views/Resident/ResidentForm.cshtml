@@ -1,6 +1,6 @@
 ﻿@using WebAPI.DataModels
 @{
-    ViewBag.Title = "RegisterForm";
+    ViewBag.Title = "ResidentForm";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
 <h2>Registration form of a resident</h2>
@@ -21,17 +21,17 @@
     </div>
 
     <label for="sel1">Select dormitory :</label>
-    <select class="form-control" id="dorm">
-    </select>
+    <div>
+        @Html.DropDownList("ResidentController", (IEnumerable
+                   <SelectListItem>)ViewBag.Dormitory)
+    </div>
     <br />
 
     <label for="sel1">Select room :</label>
-    <select class="form-control" id="room">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-    </select>
+    <div>
+        @Html.DropDownList("ResidentController", (IEnumerable
+                        <SelectListItem>)ViewBag.Rooms)
+    </div>
     <br />
 
     <button type="submit" class="btn btn-default">Submit</button>
