@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebAPI.DataModels;
-using WebAPI.Data;
+using DataContract.Data;
+using DataContract.Objects;
 
 namespace WebAPI.Controllers
 {
@@ -20,7 +20,9 @@ namespace WebAPI.Controllers
         public ActionResult ResidentForm()
         {
             RoomRepository roomRepository = new RoomRepository();
-            roomRepository.GetAll();
+            List<Room> rooms = roomRepository.GetAll();
+            DormitoryRepository dormitoryRepository = new DormitoryRepository();
+            List<Dormitory> dormitories = dormitoryRepository.GetAll();
             return View();
         }
 
