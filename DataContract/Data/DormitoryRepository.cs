@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using DataContract.Interfaces;
 using DataContract.Objects;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Web.Script.Serialization;
 
 namespace DataContract.Data
 {
@@ -15,12 +17,52 @@ namespace DataContract.Data
 
         public bool Create(Dormitory entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = httpClient.PostAsync("api/Dormitories", content).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool Delete(object id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Dormitory dormitory = new Dormitory();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.DeleteAsync("api/Dormitories/" + id.ToString()).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<Dormitory> GetAll()
@@ -30,9 +72,9 @@ namespace DataContract.Data
                 List<Dormitory> listOfDormitories = new List<Dormitory>();
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri("http://webapi-kentsoft.azurewebsites.net/");
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     HttpResponseMessage response = httpClient.GetAsync("api/Dormitories").Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
@@ -40,7 +82,7 @@ namespace DataContract.Data
                 }
                 return listOfDormitories;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -51,13 +93,12 @@ namespace DataContract.Data
             try
             {
                 Dormitory dormitory = new Dormitory();
-                int _id = (int)id;
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri("http://webapi-kentsoft.azurewebsites.net/");
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = httpClient.GetAsync(String.Format("api/Rooms/{0}", id)).Result;
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.GetAsync("api/Dormitories/" + id.ToString()).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
                     dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
@@ -72,7 +113,26 @@ namespace DataContract.Data
 
         public bool Update(object id, Dormitory entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Dormitory dormitory = new Dormitory();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = httpClient.PutAsync("api/Dormitories/" + id.ToString(), content).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

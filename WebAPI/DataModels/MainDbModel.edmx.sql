@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/27/2018 14:57:22
+-- Date Created: 04/10/2018 14:33:39
 -- Generated from EDMX file: C:\Users\edvala\source\repos\KTUnited\WebAPI\DataModels\MainDbModel.edmx
 -- --------------------------------------------------
 
@@ -271,7 +271,7 @@ ADD CONSTRAINT [FK_AdministratorDormitory]
     FOREIGN KEY ([Dormitory_ID])
     REFERENCES [dbo].[DormitorySet]
         ([ID])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_AdministratorDormitory'

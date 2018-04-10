@@ -177,7 +177,9 @@
   </Association>
   <Association Name="AdministratorDormitory">
     <End Role="Administrator" Type="MainDbModel.Store.AdministratorSet" Multiplicity="*" />
-    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <ReferentialConstraint>
       <Principal Role="Dormitory">
         <PropertyRef Name="ID" />
@@ -387,8 +389,11 @@
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.AdministratorDormitory" FromRole="Administrator" ToRole="Dormitory" />
         </EntityType>
         <Association Name="AdministratorDormitory">
-          <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="1" />
-          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="0..1" >
+          </End>
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
         </Association>
         <Association Name="DormitoryVisit">
           <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />

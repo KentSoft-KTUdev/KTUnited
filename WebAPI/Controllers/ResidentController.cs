@@ -19,10 +19,6 @@ namespace WebAPI.Controllers
         // sukurkit resident forma (ji bus naudojama sukurimui residento arba modifikacijai)
         public ActionResult ResidentForm()
         {
-            RoomRepository roomRepository = new RoomRepository();
-            List<Room> rooms = roomRepository.GetAll();
-            DormitoryRepository dormitoryRepository = new DormitoryRepository();
-            List<Dormitory> dormitories = dormitoryRepository.GetAll();
             return View();
         }
 
