@@ -3,7 +3,9 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
-<h1>You are Admin</h1>
+
+<div align="center">
+     <h1>You are Admin</h1>
 <p>Choose an option..</p>
 
 <div class="btn-group-vertical" data-toggle="buttons">
@@ -11,4 +13,7 @@
     <br />
     <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterGuard", "Admin")'">Register a guard</button>
     <br />
+    <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterDormitory", "Admin")'">Add a dormitory</button>
+    <br />
+</div>
 </div>
