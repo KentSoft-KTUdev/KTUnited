@@ -8,9 +8,12 @@
     <p>Sign in as..</p>
 
     <div class="btn-group-vertical" data-toggle="buttons">
-        <button type="button" class="btn btn-lg btn-success" onclick="location.href='@Url.Action("Index", "Resident")'" >Resident</button>
-        <button type="button" class="btn btn-lg">Guard</button>
-        <button type="button" class="btn btn-lg">Guest</button>
-        <button type="button" class="btn btn-lg">Admin</button>
+        <button type="button" class="btn btn-lg btn-success" onclick="location.href='@Url.Action("Index", "Resident")'">Resident</button>
+        <br />
+        <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("Index", "Guard")'">Guard</button>
+        <br />
+        <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("Index", "Guest")'">Guest</button>
+        <br />
+        <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("Index", "Admin")'">Admin</button>
     </div>
 </body>
