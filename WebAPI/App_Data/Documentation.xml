@@ -504,7 +504,7 @@
             <param name="id">Visit identifaction key</param>
             <returns>Http request result</returns>
         </member>
-        <member name="M:WebAPI.Controllers.DormitoriesController.PutDormitory(System.Int32,WebAPI.DataModels.Dormitory)">
+        <member name="M:WebAPI.Controllers.DormitoriesController.PutDormitory(System.Int32,DataContract.Objects.Dormitory)">
             <summary>
             Updates particular Dormitory object in SQL database
             </summary>
@@ -512,7 +512,7 @@
             <param name="dormitory">Updated Dormitory object which will replace existing Dormitory object in SQL database</param>
             <returns>Http request status</returns>
         </member>
-        <member name="M:WebAPI.Controllers.DormitoriesController.PostDormitory(WebAPI.DataModels.Dormitory)">
+        <member name="M:WebAPI.Controllers.DormitoriesController.PostDormitory(DataContract.Objects.Dormitory)">
             <summary>
             Inserts new Dormitory object into SQL database
             </summary>
