@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using AdministratorContract = DataContract.Objects.Administrator;
 
 namespace WebAPI.Controllers
 {
@@ -17,16 +16,16 @@ namespace WebAPI.Controllers
         private MainDbModelContainer1 db = new MainDbModelContainer1();
 
         // GET: api/Administrators
-        public List<Administrator> GetAdministratorSet()
+        public List<AdministratorContract> GetAdministratorSet()
         {
-            return db.AdministratorSet.ToList();
+            return db.AdministratorSet.Select(a => a.ToContract()).ToList();
         }
 
         // GET: api/Administrators/5
-        [ResponseType(typeof(Administrator))]
+        [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult GetAdministrator(long id)
         {
-            Administrator administrator = db.AdministratorSet.Find(id);
+            AdministratorContract administrator = db.AdministratorSet.Find(id).ToContract();
             if (administrator == null)
             {
                 return NotFound();
@@ -37,7 +36,7 @@ namespace WebAPI.Controllers
 
         // PUT: api/Administrators/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutAdministrator(long id, Administrator administrator)
+        public IHttpActionResult PutAdministrator(long id, AdministratorContract administrator)
         {
             if (!ModelState.IsValid)
             {
@@ -49,7 +48,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(administrator).State = EntityState.Modified;
+            db.Entry(administrator.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -71,15 +70,15 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/Administrators
-        [ResponseType(typeof(Administrator))]
-        public IHttpActionResult PostAdministrator(Administrator administrator)
+        [ResponseType(typeof(AdministratorContract))]
+        public IHttpActionResult PostAdministrator(AdministratorContract administrator)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.AdministratorSet.Add(administrator);
+            db.AdministratorSet.Add(administrator.ToInternal());
 
             try
             {
@@ -101,16 +100,16 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Administrators/5
-        [ResponseType(typeof(Administrator))]
+        [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult DeleteAdministrator(long id)
         {
-            Administrator administrator = db.AdministratorSet.Find(id);
+            AdministratorContract administrator = db.AdministratorSet.Find(id).ToContract();
             if (administrator == null)
             {
                 return NotFound();
             }
 
-            db.AdministratorSet.Remove(administrator);
+            db.AdministratorSet.Remove(administrator.ToInternal());
             db.SaveChanges();
 
             return Ok(administrator);
@@ -127,7 +126,7 @@ namespace WebAPI.Controllers
 
         private bool AdministratorExists(long id)
         {
-            return db.AdministratorSet.Count(e => e.PersonalCode == id) > 0;
+            return db.AdministratorSet.Any(e => e.PersonalCode == id);
         }
     }
 }
