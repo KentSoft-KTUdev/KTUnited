@@ -9,7 +9,7 @@ namespace DataContract.Objects
     public class Room
     {
         public int ID { get; set; }
-        public int DormitoryID { get; set; }
+        public Dormitory Dormitory { get; set; }
         public int Number { get; set; }
     }
 }
