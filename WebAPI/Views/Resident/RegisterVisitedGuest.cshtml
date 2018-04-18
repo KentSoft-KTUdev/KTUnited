@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "RegisterVisitedGuest";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+
+<h2>RegisterVisitedGuest</h2>
+
+<form action="">
+    
+    <label for="sel1">Select guest from list :</label>
+    <div>
+        @Html.DropDownList("ResidentController", (IEnumerable
+                        <SelectListItem>)ViewBag.Guests, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-default">Patvirtinti</button>
+</form>

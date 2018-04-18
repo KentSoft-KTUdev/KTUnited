@@ -6,14 +6,21 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0271b11a8b2c4ccda067fc39dfdf381a" Name="Diagram1" >
         <EntityTypeShape EntityType="MainDbModel.Resident" Width="1.5" PointX="0.5" PointY="3.125" />
-        <EntityTypeShape EntityType="MainDbModel.Room" Width="1.5" PointX="0.5" PointY="0.5" />
-        <AssociationConnector Association="MainDbModel.RoomResident" />
         <EntityTypeShape EntityType="MainDbModel.Guest" Width="1.5" PointX="6.875" PointY="3.125" />
         <EntityTypeShape EntityType="MainDbModel.Dormitory" Width="1.5" PointX="2.5" PointY="0.5" />
         <AssociationConnector Association="MainDbModel.DormitoryResident" />
         <EntityTypeShape EntityType="MainDbModel.Visit" Width="1.5" PointX="4.625" PointY="0.5" />
-        <AssociationConnector Association="MainDbModel.VisitGuest" />
         <AssociationConnector Association="MainDbModel.ResidentVisit" />
+        <EntityTypeShape EntityType="MainDbModel.Guard" Width="1.5" PointX="2.75" PointY="3.75" />
+        <AssociationConnector Association="MainDbModel.GuardDormitory" />
+        <AssociationConnector Association="MainDbModel.GuardVisit" />
+        <EntityTypeShape EntityType="MainDbModel.Administrator" Width="1.5" PointX="7.875" PointY="0.5" />
+        <AssociationConnector Association="MainDbModel.AdministratorDormitory" />
+        <AssociationConnector Association="MainDbModel.DormitoryVisit" />
+        <EntityTypeShape EntityType="MainDbModel.Room" Width="1.5" PointX="0.5" PointY="0.5" />
+        <AssociationConnector Association="MainDbModel.RoomDormitory" />
+        <AssociationConnector Association="MainDbModel.RoomResident" />
+        <AssociationConnector Association="MainDbModel.VisitGuest" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

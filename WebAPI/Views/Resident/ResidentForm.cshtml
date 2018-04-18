@@ -1,0 +1,38 @@
+﻿@using WebAPI.DataModels
+@{
+    ViewBag.Title = "ResidentForm";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+<h2>Registration form of a resident</h2>
+
+<form action="">
+
+    <div class="form-group">
+        <label for="usr">First Name:</label>
+        <input type="text" class="form-control" id="firstname">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Last Name:</label>
+        <input type="text" class="form-control" id="lastname">
+    </div>
+    <div class="form-group">
+        <label for="personcode">Personal code:</label>
+        <input type="number" class="form-control" id="personcode">
+    </div>
+
+    <label for="sel1">Select dormitory :</label>
+    <div>
+        @Html.DropDownList("ResidentController", (IEnumerable
+                        <SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <label for="sel1">Select room :</label>
+    <div>
+        @Html.DropDownList("ResidentController", (IEnumerable
+                             <SelectListItem>)ViewBag.Rooms, new { @class = "form-control" })
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
