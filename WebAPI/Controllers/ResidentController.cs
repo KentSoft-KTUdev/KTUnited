@@ -25,6 +25,7 @@ namespace WebAPI.Controllers
             DormitoryRepository dormitoryRepository = new DormitoryRepository();
             List<Dormitory> dormitories = dormitoryRepository.GetAll();
 
+
             List<SelectListItem> Dormitory = new List<SelectListItem>();
             if (dormitories.Count() == 0)
             {

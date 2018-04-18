@@ -8,6 +8,10 @@ namespace DataContract
 {
     public static class Configuration
     {
-        public static string WebApiAdress = "http://webapi-kentsoft.azurewebsites.net/";
+        /*
+         * webapi-kentsoft.azurewebsites.net
+         * localhost:64476
+         */
+        public static string WebApiAdress = "http://localhost:64476/";
     }
 }
