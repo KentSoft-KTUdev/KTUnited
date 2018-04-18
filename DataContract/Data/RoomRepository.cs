@@ -1,26 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using DataContract.Objects;
 using DataContract.Interfaces;
-using DataContract.Data;
-using System.Net.Http;
+using DataContract.Objects;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Web.Script.Serialization;
 
 namespace DataContract.Data
 {
     public class RoomRepository : IRepository<Room>
     {
-        public Boolean Create(Room entity)
+
+        public HttpResponseMessage Create(Room entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = httpClient.PostAsync("api/Rooms", content).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        return response;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public bool Delete(object id)
+        public HttpResponseMessage Delete(object id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Room room = new Room();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.DeleteAsync("api/Rooms/" + id.ToString()).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    room = JsonConvert.DeserializeObject<Room>(jsonContents);
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<Room> GetAll()
@@ -30,9 +72,9 @@ namespace DataContract.Data
                 List<Room> listOfRooms = new List<Room>();
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri("http://webapi-kentsoft.azurewebsites.net/");
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     HttpResponseMessage response = httpClient.GetAsync("api/Rooms").Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
@@ -40,7 +82,7 @@ namespace DataContract.Data
                 }
                 return listOfRooms;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -51,28 +93,46 @@ namespace DataContract.Data
             try
             {
                 Room room = new Room();
-                int _id = (int)id;
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri("http://webapi-kentsoft.azurewebsites.net/");
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = httpClient.GetAsync(String.Format("api/Rooms/{0}", id)).Result;
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.GetAsync("api/Rooms/" + id.ToString()).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
                     room = JsonConvert.DeserializeObject<Room>(jsonContents);
                 }
                 return room;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
 
-        public bool Update(object id, Room entity)
+        public HttpResponseMessage Update(object id, Room entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Room room = new Room();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = httpClient.PutAsync("api/Rooms/" + id.ToString(), content).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    room = JsonConvert.DeserializeObject<Room>(jsonContents);
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

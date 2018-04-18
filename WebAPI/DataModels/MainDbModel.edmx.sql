@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/27/2018 14:57:22
+-- Date Created: 04/18/2018 11:46:00
 -- Generated from EDMX file: C:\Users\edvala\source\repos\KTUnited\WebAPI\DataModels\MainDbModel.edmx
 -- --------------------------------------------------
 
@@ -19,9 +19,6 @@ GO
 
 IF OBJECT_ID(N'[dbo].[FK_DormitoryResident]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ResidentSet] DROP CONSTRAINT [FK_DormitoryResident];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VisitGuest]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GuestSet] DROP CONSTRAINT [FK_VisitGuest];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ResidentVisit]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VisitSet] DROP CONSTRAINT [FK_ResidentVisit];
@@ -43,6 +40,9 @@ IF OBJECT_ID(N'[dbo].[FK_RoomDormitory]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomResident]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ResidentSet] DROP CONSTRAINT [FK_RoomResident];
+GO
+IF OBJECT_ID(N'[dbo].[FK_VisitGuest]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[VisitSet] DROP CONSTRAINT [FK_VisitGuest];
 GO
 
 -- --------------------------------------------------
@@ -89,8 +89,7 @@ GO
 CREATE TABLE [dbo].[GuestSet] (
     [Name] nvarchar(max)  NOT NULL,
     [Surname] nvarchar(max)  NOT NULL,
-    [PersonalCode] bigint  NOT NULL,
-    [VisitID] int  NOT NULL
+    [PersonalCode] bigint  NOT NULL
 );
 GO
 
@@ -110,7 +109,8 @@ CREATE TABLE [dbo].[VisitSet] (
     [VisitEndDateTime] datetime  NOT NULL,
     [ResidentPersonalCode] bigint  NOT NULL,
     [GuardPersonalCode] bigint  NOT NULL,
-    [DormitoryID] int  NOT NULL
+    [DormitoryID] int  NOT NULL,
+    [Guest_PersonalCode] bigint  NULL
 );
 GO
 
@@ -205,21 +205,6 @@ ON [dbo].[ResidentSet]
     ([Dormitory_ID]);
 GO
 
--- Creating foreign key on [VisitID] in table 'GuestSet'
-ALTER TABLE [dbo].[GuestSet]
-ADD CONSTRAINT [FK_VisitGuest]
-    FOREIGN KEY ([VisitID])
-    REFERENCES [dbo].[VisitSet]
-        ([ID])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_VisitGuest'
-CREATE INDEX [IX_FK_VisitGuest]
-ON [dbo].[GuestSet]
-    ([VisitID]);
-GO
-
 -- Creating foreign key on [ResidentPersonalCode] in table 'VisitSet'
 ALTER TABLE [dbo].[VisitSet]
 ADD CONSTRAINT [FK_ResidentVisit]
@@ -271,7 +256,7 @@ ADD CONSTRAINT [FK_AdministratorDormitory]
     FOREIGN KEY ([Dormitory_ID])
     REFERENCES [dbo].[DormitorySet]
         ([ID])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_AdministratorDormitory'
@@ -323,6 +308,21 @@ GO
 CREATE INDEX [IX_FK_RoomResident]
 ON [dbo].[ResidentSet]
     ([RoomID]);
+GO
+
+-- Creating foreign key on [Guest_PersonalCode] in table 'VisitSet'
+ALTER TABLE [dbo].[VisitSet]
+ADD CONSTRAINT [FK_VisitGuest]
+    FOREIGN KEY ([Guest_PersonalCode])
+    REFERENCES [dbo].[GuestSet]
+        ([PersonalCode])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_VisitGuest'
+CREATE INDEX [IX_FK_VisitGuest]
+ON [dbo].[VisitSet]
+    ([Guest_PersonalCode]);
 GO
 
 -- --------------------------------------------------

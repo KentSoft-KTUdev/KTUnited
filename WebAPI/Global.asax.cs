@@ -20,6 +20,7 @@ namespace WebAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             HttpConfiguration httpConfiguration = GlobalConfiguration.Configuration;
             httpConfiguration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //httpConfiguration.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
         }
     }
 }

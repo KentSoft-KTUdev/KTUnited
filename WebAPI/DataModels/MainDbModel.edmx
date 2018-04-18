@@ -17,10 +17,6 @@
       <End Role="Dormitory" EntitySet="DormitorySet" />
       <End Role="Resident" EntitySet="ResidentSet" />
     </AssociationSet>
-    <AssociationSet Name="VisitGuest" Association="MainDbModel.Store.VisitGuest">
-      <End Role="Visit" EntitySet="VisitSet" />
-      <End Role="Guest" EntitySet="GuestSet" />
-    </AssociationSet>
     <AssociationSet Name="ResidentVisit" Association="MainDbModel.Store.ResidentVisit">
       <End Role="Resident" EntitySet="ResidentSet" />
       <End Role="Visit" EntitySet="VisitSet" />
@@ -49,6 +45,10 @@
       <End Role="Room" EntitySet="RoomSet" />
       <End Role="Resident" EntitySet="ResidentSet" />
     </AssociationSet>
+    <AssociationSet Name="VisitGuest" Association="MainDbModel.Store.VisitGuest">
+      <End Role="Visit" EntitySet="VisitSet" />
+      <End Role="Guest" EntitySet="GuestSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ResidentSet">
     <Key>
@@ -67,7 +67,6 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PersonalCode" Type="bigint" Nullable="false" />
-    <Property Name="VisitID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DormitorySet">
     <Key>
@@ -88,6 +87,7 @@
     <Property Name="ResidentPersonalCode" Type="bigint" Nullable="false" />
     <Property Name="GuardPersonalCode" Type="bigint" Nullable="false" />
     <Property Name="DormitoryID" Type="int" Nullable="false" />
+    <Property Name="Guest_PersonalCode" Type="bigint" Nullable="true" />
   </EntityType>
   <EntityType Name="GuardSet">
     <Key>
@@ -124,18 +124,6 @@
       </Principal>
       <Dependent Role="Resident">
         <PropertyRef Name="Dormitory_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="VisitGuest">
-    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="1" />
-    <End Role="Guest" Type="MainDbModel.Store.GuestSet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Visit">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Guest">
-        <PropertyRef Name="VisitID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -177,7 +165,9 @@
   </Association>
   <Association Name="AdministratorDormitory">
     <End Role="Administrator" Type="MainDbModel.Store.AdministratorSet" Multiplicity="*" />
-    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1" />
+    <End Role="Dormitory" Type="MainDbModel.Store.DormitorySet" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <ReferentialConstraint>
       <Principal Role="Dormitory">
         <PropertyRef Name="ID" />
@@ -223,6 +213,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="VisitGuest">
+    <End Role="Visit" Type="MainDbModel.Store.VisitSet" Multiplicity="*" />
+    <End Role="Guest" Type="MainDbModel.Store.GuestSet" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Guest">
+        <PropertyRef Name="PersonalCode" />
+      </Principal>
+      <Dependent Role="Visit">
+        <PropertyRef Name="Guest_PersonalCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -236,10 +238,6 @@
             <End Role="Resident" EntitySet="ResidentSet" />
           </AssociationSet>
           <EntitySet Name="VisitSet" EntityType="MainDbModel.Visit" />
-          <AssociationSet Name="VisitGuest" Association="MainDbModel.VisitGuest">
-            <End Role="Visit" EntitySet="VisitSet" />
-            <End Role="Guest" EntitySet="GuestSet" />
-          </AssociationSet>
           <AssociationSet Name="ResidentVisit" Association="MainDbModel.ResidentVisit">
             <End Role="Resident" EntitySet="ResidentSet" />
             <End Role="Visit" EntitySet="VisitSet" />
@@ -271,6 +269,10 @@
             <End Role="Room" EntitySet="RoomSet" />
             <End Role="Resident" EntitySet="ResidentSet" />
           </AssociationSet>
+          <AssociationSet Name="VisitGuest" Association="MainDbModel.VisitGuest">
+            <End Role="Visit" EntitySet="VisitSet" />
+            <End Role="Guest" EntitySet="GuestSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Resident">
           <Key>
@@ -292,7 +294,6 @@
           <Property Name="Surname" Type="String" Nullable="false" />
           <Property Name="PersonalCode" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Visit" Relationship="MainDbModel.VisitGuest" FromRole="Guest" ToRole="Visit" />
-          <Property Name="VisitID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Dormitory">
           <Key>
@@ -319,26 +320,14 @@
           <Property Name="VisitRegDateTime" Type="DateTime" Nullable="false" />
           <Property Name="IsOver" Type="Boolean" Nullable="false" />
           <Property Name="VisitEndDateTime" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Guest" Relationship="MainDbModel.VisitGuest" FromRole="Visit" ToRole="Guest" />
           <NavigationProperty Name="Resident" Relationship="MainDbModel.ResidentVisit" FromRole="Visit" ToRole="Resident" />
           <Property Name="ResidentPersonalCode" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Guard" Relationship="MainDbModel.GuardVisit" FromRole="Visit" ToRole="Guard" />
           <Property Name="GuardPersonalCode" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryVisit" FromRole="Visit" ToRole="Dormitory" />
           <Property Name="DormitoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Guest" Relationship="MainDbModel.VisitGuest" FromRole="Visit" ToRole="Guest" />
         </EntityType>
-        <Association Name="VisitGuest">
-          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="1" />
-          <End Type="MainDbModel.Guest" Role="Guest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Visit">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Guest">
-              <PropertyRef Name="VisitID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ResidentVisit">
           <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="1" />
           <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="*" />
@@ -387,8 +376,11 @@
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.AdministratorDormitory" FromRole="Administrator" ToRole="Dormitory" />
         </EntityType>
         <Association Name="AdministratorDormitory">
-          <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="1" />
-          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
+          <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="0..1" >
+          </End>
+          <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
         </Association>
         <Association Name="DormitoryVisit">
           <End Type="MainDbModel.Dormitory" Role="Dormitory" Multiplicity="1" />
@@ -436,6 +428,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="VisitGuest">
+          <End Type="MainDbModel.Visit" Role="Visit" Multiplicity="*" />
+          <End Type="MainDbModel.Guest" Role="Guest" Multiplicity="0..1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -458,7 +454,6 @@
           <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />
-          <ScalarProperty Name="VisitID" ColumnName="VisitID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -534,6 +529,15 @@
       <EndProperty Name="Administrator">
         <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
       </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="VisitGuest" TypeName="MainDbModel.VisitGuest" StoreEntitySet="VisitSet">
+      <EndProperty Name="Guest">
+        <ScalarProperty Name="PersonalCode" ColumnName="Guest_PersonalCode" />
+      </EndProperty>
+      <EndProperty Name="Visit">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+      <Condition ColumnName="Guest_PersonalCode" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
