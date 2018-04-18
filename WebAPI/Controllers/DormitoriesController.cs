@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using DormitoryContract = DataContract.Objects.Dormitory;
 
 namespace WebAPI.Controllers
 {
@@ -24,9 +23,9 @@ namespace WebAPI.Controllers
         /// Returns JSON serialized array of Dormitory objects
         /// </summary>
         /// <returns>List of Dormitories</returns>
-        public List<Dormitory> GetDormitorySet()
+        public List<DormitoryContract> GetDormitorySet()
         {
-            return db.DormitorySet.ToList();
+            return db.DormitorySet.Select(d => d.ToContract()).ToList();
         }
 
         // GET: api/Dormitories/5
@@ -35,10 +34,10 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Visit identifaction key</param>
         /// <returns>Http request result</returns>
-        [ResponseType(typeof(Dormitory))]
+        [ResponseType(typeof(DormitoryContract))]
         public IHttpActionResult GetDormitory(int id)
         {
-            Dormitory dormitory = db.DormitorySet.Find(id);
+            DormitoryContract dormitory = db.DormitorySet.Find(id).ToContract();
             if (dormitory == null)
             {
                 return NotFound();
@@ -55,7 +54,7 @@ namespace WebAPI.Controllers
         /// <param name="dormitory">Updated Dormitory object which will replace existing Dormitory object in SQL database</param>
         /// <returns>Http request status</returns>
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutDormitory(int id, Dormitory dormitory)
+        public IHttpActionResult PutDormitory(int id, DormitoryContract dormitory)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +66,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(dormitory).State = EntityState.Modified;
+            db.Entry(dormitory.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -94,15 +93,15 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="dormitory">Dormitory to be inserted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Dormitory))]
-        public IHttpActionResult PostDormitory(Dormitory dormitory)
+        [ResponseType(typeof(DormitoryContract))]
+        public IHttpActionResult PostDormitory(DormitoryContract dormitory)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.DormitorySet.Add(dormitory);
+            db.DormitorySet.Add(dormitory.ToInternal());
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = dormitory.ID }, dormitory);
@@ -114,16 +113,16 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Identification key of Dormitory to be deleted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Dormitory))]
+        [ResponseType(typeof(DormitoryContract))]
         public IHttpActionResult DeleteDormitory(int id)
         {
-            Dormitory dormitory = db.DormitorySet.Find(id);
+            DormitoryContract dormitory = db.DormitorySet.Find(id).ToContract();
             if (dormitory == null)
             {
                 return NotFound();
             }
 
-            db.DormitorySet.Remove(dormitory);
+            db.DormitorySet.Remove(dormitory.ToInternal());
             db.SaveChanges();
 
             return Ok(dormitory);

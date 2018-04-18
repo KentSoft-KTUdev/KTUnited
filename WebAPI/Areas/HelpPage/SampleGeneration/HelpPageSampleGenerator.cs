@@ -284,8 +284,10 @@ namespace WebAPI.Areas.HelpPage
         /// <param name="type">The type.</param>
         /// <param name="mediaType">Type of the media.</param>
         /// <returns></returns>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "The exception is recorded as InvalidSample.")]
-        public virtual object WriteSampleObjectUsingFormatter(MediaTypeFormatter formatter, object value, Type type, MediaTypeHeaderValue mediaType)
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification =
+            "The exception is recorded as InvalidSample.")]
+        public virtual object WriteSampleObjectUsingFormatter(MediaTypeFormatter formatter, object value, Type type,
+            MediaTypeHeaderValue mediaType)
         {
             if (formatter == null)
             {
@@ -326,8 +328,8 @@ namespace WebAPI.Areas.HelpPage
                         CultureInfo.CurrentCulture,
                         "Failed to generate the sample for media type '{0}'. Cannot use formatter '{1}' to write type '{2}'.",
                         mediaType,
-                        formatter.GetType().Name,
-                        type.Name));
+                        formatter.GetType().FullName,
+                        type.FullName));
                 }
             }
             catch (Exception e)
@@ -335,7 +337,7 @@ namespace WebAPI.Areas.HelpPage
                 sample = new InvalidSample(String.Format(
                     CultureInfo.CurrentCulture,
                     "An exception has occurred while using the formatter '{0}' to generate sample for media type '{1}'. Exception message: {2}",
-                    formatter.GetType().Name,
+                    formatter.GetType().FullName,
                     mediaType.MediaType,
                     UnwrapException(e).Message));
             }
