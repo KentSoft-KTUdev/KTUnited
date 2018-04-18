@@ -46,10 +46,15 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Data\AdministratorRepository.cs" />
+    <Compile Include="Data\RoomRepository.cs" />
+    <Compile Include="Data\GuestRepository.cs" />
+    <Compile Include="Data\GuardRepository.cs" />
     <Compile Include="Data\DormitoryRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Objects\Administrator.cs" />
     <Compile Include="Objects\Dormitory.cs" />
+    <Compile Include="Objects\Guard.cs" />
+    <Compile Include="Objects\Guest.cs" />
     <Compile Include="Objects\Resident.cs" />
     <Compile Include="Objects\Room.cs" />
     <Compile Include="Objects\Visit.cs" />

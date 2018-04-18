@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataContract.Objects
 {
-    public class Room
+    public class Guest
     {
-        public int ID { get; set; }
-        public int DormitoryID { get; set; }
-        public int Number { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public Int64 PersonalCode { get; set; }
     }
 }

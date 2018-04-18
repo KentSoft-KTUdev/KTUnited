@@ -12,10 +12,10 @@ using System.Web.Script.Serialization;
 
 namespace DataContract.Data
 {
-    public class DormitoryRepository : IRepository<Dormitory>
+    public class RoomRepository : IRepository<Room>
     {
 
-        public HttpResponseMessage Create(Dormitory entity)
+        public HttpResponseMessage Create(Room entity)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace DataContract.Data
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = httpClient.PostAsync("api/Dormitories", content).Result;
+                    HttpResponseMessage response = httpClient.PostAsync("api/Rooms", content).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         return response;
@@ -46,16 +46,16 @@ namespace DataContract.Data
         {
             try
             {
-                Dormitory dormitory = new Dormitory();
+                Room room = new Room();
                 using (HttpClient httpClient = new HttpClient())
                 {
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = httpClient.DeleteAsync("api/Dormitories/" + id.ToString()).Result;
+                    HttpResponseMessage response = httpClient.DeleteAsync("api/Rooms/" + id.ToString()).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
-                    dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
+                    room = JsonConvert.DeserializeObject<Room>(jsonContents);
                     return response;
                 }
             }
@@ -65,22 +65,22 @@ namespace DataContract.Data
             }
         }
 
-        public List<Dormitory> GetAll()
+        public List<Room> GetAll()
         {
             try
             {
-                List<Dormitory> listOfDormitories = new List<Dormitory>();
+                List<Room> listOfRooms = new List<Room>();
                 using (HttpClient httpClient = new HttpClient())
                 {
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = httpClient.GetAsync("api/Dormitories").Result;
+                    HttpResponseMessage response = httpClient.GetAsync("api/Rooms").Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
-                    listOfDormitories = JsonConvert.DeserializeObject<List<Dormitory>>(jsonContents);
+                    listOfRooms = JsonConvert.DeserializeObject<List<Room>>(jsonContents);
                 }
-                return listOfDormitories;
+                return listOfRooms;
             }
             catch (Exception ex)
             {
@@ -88,22 +88,22 @@ namespace DataContract.Data
             }
         }
 
-        public Dormitory Read(object id)
+        public Room Read(object id)
         {
             try
             {
-                Dormitory dormitory = new Dormitory();
+                Room room = new Room();
                 using (HttpClient httpClient = new HttpClient())
                 {
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = httpClient.GetAsync("api/Dormitories/" + id.ToString()).Result;
+                    HttpResponseMessage response = httpClient.GetAsync("api/Rooms/" + id.ToString()).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
-                    dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
+                    room = JsonConvert.DeserializeObject<Room>(jsonContents);
                 }
-                return dormitory;
+                return room;
             }
             catch (Exception ex)
             {
@@ -111,21 +111,21 @@ namespace DataContract.Data
             }
         }
 
-        public HttpResponseMessage Update(object id, Dormitory entity)
+        public HttpResponseMessage Update(object id, Room entity)
         {
             try
             {
-                Dormitory dormitory = new Dormitory();
+                Room room = new Room();
                 using (HttpClient httpClient = new HttpClient())
                 {
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = httpClient.PutAsync("api/Dormitories/" + id.ToString(), content).Result;
+                    HttpResponseMessage response = httpClient.PutAsync("api/Rooms/" + id.ToString(), content).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
-                    dormitory = JsonConvert.DeserializeObject<Dormitory>(jsonContents);
+                    room = JsonConvert.DeserializeObject<Room>(jsonContents);
                     return response;
                 }
             }

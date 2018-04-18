@@ -14,10 +14,7 @@ namespace DataContract.Objects
         public DateTime VisitEndDateTime { get; set; }
         public Int64 ResidentPersonalCode { get; set; }
         public Int64 GuardPersonalCode { get; set; }
-        public int DormitoryID { get; set; }
-        //public List<Guest> Guest { get; set; }
-        public Resident Resident { get; set; }
-        //public Guard Guard { get; set; }
         public Dormitory Dormitory { get; set; }
+        public Guest Guest { get; set; }
     }
 }

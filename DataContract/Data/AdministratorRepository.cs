@@ -14,7 +14,7 @@ namespace DataContract.Data
 {
     public class AdministratorRepository : IRepository<Administrator>
     {
-        public bool Create(Administrator entity)
+        public HttpResponseMessage Create(Administrator entity)
         {
             try
             {
@@ -27,11 +27,11 @@ namespace DataContract.Data
                     HttpResponseMessage response = httpClient.PostAsync("api/Administrators", content).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        return true;
+                        return response;
                     }
                     else
                     {
-                        return false;
+                        return response;
                     }
                 }
             }
@@ -41,7 +41,7 @@ namespace DataContract.Data
             }
         }
 
-        public bool Delete(object id)
+        public HttpResponseMessage Delete(object id)
         {
             try
             {
@@ -53,11 +53,11 @@ namespace DataContract.Data
                     HttpResponseMessage response = httpClient.DeleteAsync("api/Administrators/" + id.ToString()).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        return true;
+                        return response;
                     }
                     else
                     {
-                        return false;
+                        return response;
                     }
                 }
             }
@@ -113,7 +113,7 @@ namespace DataContract.Data
             }
         }
 
-        public bool Update(object id, Administrator entity)
+        public HttpResponseMessage Update(object id, Administrator entity)
         {
             try
             {
@@ -128,8 +128,8 @@ namespace DataContract.Data
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
                     admin = JsonConvert.DeserializeObject<Administrator>(jsonContents);
+                    return response;
                 }
-                return true;
             }
             catch (Exception ex)
             {
