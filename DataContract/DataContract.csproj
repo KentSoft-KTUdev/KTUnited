@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Data\AdministratorRepository.cs" />
+    <Compile Include="Data\VisitRepository.cs" />
+    <Compile Include="Data\ResidentRepository.cs" />
     <Compile Include="Data\RoomRepository.cs" />
     <Compile Include="Data\GuestRepository.cs" />
     <Compile Include="Data\GuardRepository.cs" />
