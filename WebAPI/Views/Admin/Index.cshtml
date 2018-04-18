@@ -6,4 +6,9 @@
 <h1>You are Admin</h1>
 <p>Choose an option..</p>
 
-<h2>Development team is working for you to have options...</h2>
+<div class="btn-group-vertical" data-toggle="buttons">
+    <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("ResidentForm", "Resident")'">Register a resident</button>
+    <br />
+    <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("Index", "Admin")'">Register a guard</button>
+    <br />
+</div>
