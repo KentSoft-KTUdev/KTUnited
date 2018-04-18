@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
+<div align="center">
 <h1>You are resident</h1>
 <p>Choose an option..</p>
 
@@ -10,4 +11,5 @@
     <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterGuest", "Resident")'">Register a new guest</button>
     <br />
     <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterVisitedGuest", "Resident")'">Register already visited guest</button>
+</div>
 </div>
