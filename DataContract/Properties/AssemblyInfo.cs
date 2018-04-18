@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DataContract")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Data contract package for Kentsoft Dormitory API")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DataContract")]
+[assembly: AssemblyCompany("Kentsoft")]
+[assembly: AssemblyProduct("Not used by NuGet")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Not used by NuGet")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
