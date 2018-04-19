@@ -4,16 +4,16 @@
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
 
-<h2>RegisterVisitedGuest</h2>
+<h2>RegisterVisit</h2>
 
 <form action="">
-    
+
     <label for="sel1">Select guest from list :</label>
     <div>
         @Html.DropDownList("ResidentController", (IEnumerable
-                        <SelectListItem>)ViewBag.Guests, new { @class = "form-control" })
+                             <SelectListItem>)ViewBag.Guests, new { @class = "form-control" })
     </div>
     <br />
 
-    <button type="submit" class="btn btn-default">Patvirtinti</button>
+    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("RegisterVisit", "Resident")'">Submit</button>  <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("RegisterGuest", "Resident")'">Register new</button>
 </form>

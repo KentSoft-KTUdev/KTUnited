@@ -298,6 +298,7 @@
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\FormModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Extensions\Mappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -419,9 +420,8 @@
     <Content Include="Views\Shared\_WebAppLayout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\Resident\Index.cshtml" />
-    <Content Include="Views\Resident\ResidentForm.cshtml" />
+    <Content Include="Views\Admin\ResidentForm.cshtml" />
     <Content Include="Views\Resident\RegisterGuest.cshtml" />
-    <Content Include="Views\Resident\Visits.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -439,6 +439,8 @@
     <Content Include="Views\Resident\RegisterVisitedGuest.cshtml" />
     <Content Include="Views\Admin\RegisterGuard.cshtml" />
     <Content Include="Views\Admin\RegisterDormitory.cshtml" />
+    <Content Include="Views\Resident\RegisterVisit.cshtml" />
+    <Content Include="Views\Admin\RegisterRoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

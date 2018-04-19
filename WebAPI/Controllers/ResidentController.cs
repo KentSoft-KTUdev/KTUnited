@@ -15,56 +15,25 @@ namespace WebAPI.Controllers
         {
             return View();
         }
+        // sukurkit svecio registravimo forma is residento puses
 
-        // sukurkit resident forma (ji bus naudojama sukurimui residento arba modifikacijai)
-        public ActionResult ResidentForm()
+        [HttpPost]
+        public ActionResult RegisterGuestInfo()
         {
-            #region ViewBag
-            RoomRepository roomRepository = new RoomRepository();
-            List<Room> rooms = roomRepository.GetAll();
-            DormitoryRepository dormitoryRepository = new DormitoryRepository();
-            List<Dormitory> dormitories = dormitoryRepository.GetAll();
+            string name = Request["firstname"].ToString();
+            string surname = Request["lastname"].ToString();
+            int personalID = Convert.ToInt32(Request["personalcode"].ToString());
 
 
-            List<SelectListItem> Dormitory = new List<SelectListItem>();
-            if (dormitories.Count() == 0)
-            {
-                Dormitory.Add(new SelectListItem { Text = "Nėra registruotų bendrabučių", Value = "1" });
-            }
-            else
-            {
-                Dormitory.Add(new SelectListItem { Text = "", Value = "1" });
-                for (int i = 0; i < dormitories.Count(); i++)
-                {
-                    var temp = new SelectListItem { Text = dormitories[i].Name, Value = (i + 2).ToString() };
-                    Dormitory.Add(temp);
-
-                }
-            }
-            ViewBag.Dormitory = Dormitory;
-
-            List<SelectListItem> Rooms = new List<SelectListItem>();
-            if (rooms.Count() == 0)
-            {
-                Rooms.Add(new SelectListItem { Text = "Nėra registruotų kambarių", Value = "1" });
-            }
-            else
-            {
-                Rooms.Add(new SelectListItem { Text = "", Value = "1" });
-                for (int i = 0; i < rooms.Count(); i++)
-                {
-                    var temp = new SelectListItem { Text = rooms[i].Number.ToString(), Value = (i + 2).ToString() };
-                    Rooms.Add(temp);
-
-                }
-            }
-            ViewBag.Rooms = Rooms;
-            #endregion
             return View();
         }
 
-        // sukurkit svecio registravimo forma is residento puses
         public ActionResult RegisterGuest()
+        {
+            return View();
+        }
+
+        public ActionResult RegisterVisit()
         {
             return View();
         }

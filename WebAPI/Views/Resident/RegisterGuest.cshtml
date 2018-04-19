@@ -1,30 +1,30 @@
-﻿
+﻿@using WebAPI.Models
 @{
     ViewBag.Title = "RegisterGuest";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
-}   
+}
 
 
-    <h2>Register a guest</h2>
+<h2>Register a guest</h2>
 
-    <div>
-        <form action="">
+<div>
+    <form method="post">
 
-            <div class="form-group">
-                <label for="usr">First Name:</label>
-                <input type="text" class="form-control" id="firstname">
-            </div>
-            <div class="form-group">
-                <label for="pwd">Last Name:</label>
-                <input type="text" class="form-control" id="lastname">
-            </div>
+        <div class="form-group">
+            <label for="usr">First Name:</label>
+            <input type="text" class="form-control" id="firstname" name="firstname">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Last Name:</label>
+            <input type="text" class="form-control" id="lastname" name="lastname">
+        </div>
 
-            <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-            <div class="col-10">
-                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="date">
-            </div>
-            <br />
+        <div class="form-group">
+            <label for="usr">Personal code:</label>
+            <input type="number" class="form-control" id="personalcode" name="personalcode">
+        </div>
+        <br />
 
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
+        <button type="submit" class="btn btn-default">Submit</button> <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Resident")'">Back</button>
+    </form>
+</div>

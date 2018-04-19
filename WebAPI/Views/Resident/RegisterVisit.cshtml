@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "RegisterVisit";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+
+
+<h2>Register a visit</h2>
+
+<div>
+    <form>
+
+        <label for="example-datetime-local-input" class="col-2 col-form-label">Date and time</label>
+        <div class="col-10">
+            <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="date">
+        </div>
+        <br>
+
+        <button type="submit" class="btn btn-default">Submit</button> <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("RegisterVisitedGuest", "Resident")'">Back</button>
+    </form>
+</div>

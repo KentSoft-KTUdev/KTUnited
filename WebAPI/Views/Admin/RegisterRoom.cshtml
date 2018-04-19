@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "RegisterRoom";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+
+<h2>Register a Room</h2>
+
+
+<div>
+    <form action="">
+        <div class="form-group">
+            <label for="roomnumber">Room number:</label>
+            <input type="number" class="form-control" id="roomnumber">
+        </div>
+
+        <label for="sel1">Select dormitory :</label>
+        <div>
+            @Html.DropDownList("AdminController", (IEnumerable
+                             <SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" })
+        </div>
+        <br />
+        <button type="submit" class="btn btn-default">Add</button> <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Admin")'">Back</button>
+    </form>
+</div>
