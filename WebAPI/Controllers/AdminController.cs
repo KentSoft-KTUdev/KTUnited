@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         {
             DormitoryRepository dormitoryRepository = new DormitoryRepository();
             dormitoryRepository.Create((dormitory));
-            return View();
+            return RedirectToAction("nukreipiat ar darote ką norite po to. Jūsų sprendimų laisvė :)");
         }
 
         public ActionResult RegisterGuard() {
