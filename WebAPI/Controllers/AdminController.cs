@@ -64,8 +64,22 @@ namespace WebAPI.Controllers
 
 
         public ActionResult RegisterDormitory() {
+
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "name,adress")] Dormitory dormitory)
+        {
+            DormitoryRepository dormitoryRepository = new DormitoryRepository();
+            dormitoryRepository.Create((dormitory));
+            
+            return RedirectToAction("Index");
+
+        }
+
+
 
         public ActionResult RegisterRoom()
         {
