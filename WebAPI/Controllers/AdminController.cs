@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "name,adress")] Dormitory dormitory)
+        public ActionResult CreateDormitory([Bind(Include = "Name,Adress")] Dormitory dormitory)
         {
             DormitoryRepository dormitoryRepository = new DormitoryRepository();
             dormitoryRepository.Create((dormitory));
@@ -79,6 +79,13 @@ namespace WebAPI.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateGuard([Bind(Include = "PersonalCode,Adress")] Dormitory dormitory)
+        {
+            return RedirectToAction("Index");
+
+        }
 
 
         public ActionResult RegisterRoom()
@@ -108,31 +115,11 @@ namespace WebAPI.Controllers
             return View();
         }
 
-        public ActionResult RegisterGuard() {
-            #region ViewBag
-            
-            DormitoryRepository dormitoryRepository = new DormitoryRepository();
-            List<Dormitory> dormitories = dormitoryRepository.GetAll();
-
-            List<SelectListItem> Dormitory = new List<SelectListItem>();
-            if (dormitories.Count() == 0)
-            {
-                Dormitory.Add(new SelectListItem { Text = "Nėra registruotų bendrabučių", Value = "1" });
-            }
-            else
-            {
-                Dormitory.Add(new SelectListItem { Text = "", Value = "1" });
-                for (int i = 0; i < dormitories.Count(); i++)
-                {
-                    var temp = new SelectListItem { Text = dormitories[i].Name, Value = (i + 2).ToString() };
-                    Dormitory.Add(temp);
-
-                }
-            }
-            ViewBag.Dormitory = Dormitory;
-
-            #endregion
+        public ActionResult RegisterGuard()
+        {
             return View();
+
         }
+
     }
 }
