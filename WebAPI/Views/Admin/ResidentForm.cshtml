@@ -39,21 +39,19 @@
         </div>
 
         <div class="form-group">
-            @Html.DropDownListFor(model => model.Dormitory, (IEnumerable<SelectListItem>)ViewBag.Dormitory, "Dormitory:", htmlAttributes: new { @class = "form-control col-md-2" })
-            @*<div class="col-md-10">
-                    @Html.EditorFor(model => model.Dormitory, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Dormitory, "Dormitory is manditory field", new { @class = "text-danger" })
-                </div>*@
-            @*reikia sufixint, kad veiktu dropdownlistui*@
+            @Html.LabelFor(model => model.Dormitory.Name, "Dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Dormitory.Name, (IEnumerable<SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.Dormitory.Name, "Dormitory is manditory field", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="form-group">
-            @Html.DropDownListFor(model => model.Room, (IEnumerable<SelectListItem>)ViewBag.Rooms, "Room:", htmlAttributes: new { @class = "form-control col-md-2" })
-            @*<div class="col-md-10">
-                    @Html.EditorFor(model => model.Room, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Room, "Room is manditory field", new { @class = "text-danger" })
-                </div>*@
-            @*reikia sufixint, kad veiktu dropdownlistui*@
+            @Html.LabelFor(model => model.Room.Number, "Room:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Room.Number, (IEnumerable<SelectListItem>)ViewBag.Rooms, new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.Room.Number, "Room number is manditory field", new { @class = "text-danger" })
+            </div>
         </div>
 
 
