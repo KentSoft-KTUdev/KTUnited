@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "MyVisits";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+
+<h2>My visits</h2>
+
+<div>
+    @Html.DropDownList("ResidentController", (IEnumerable
+                              <SelectListItem>)ViewBag.Visits, new { @class = "form-control" })
+</div>
+<br />
+
+<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Resident")'">Go back</button>
+
