@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
     {
         // GET: Main
         public ActionResult Index()
-        {
+         {
             return View();
         }  
     }

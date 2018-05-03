@@ -12,9 +12,9 @@ namespace DataContract.Objects
         public DateTime VisitRegDateTime { get; set; }
         public bool IsOver { get; set; }
         public DateTime VisitEndDateTime { get; set; }
-        public Resident Resident { get; set; }
-        public Guard Guard { get; set; }
-        public Dormitory Dormitory { get; set; }
-        public Guest Guest { get; set; }
+        public Int64 ResidentId { get; set; }
+        public Int64 GuardId { get; set; }
+        public int DormitoryId { get; set; }
+        public Int64 GuestId { get; set; }
     }
 }

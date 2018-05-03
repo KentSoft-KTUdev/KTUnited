@@ -74,6 +74,10 @@ namespace WebAPI.Controllers
         {
             DormitoryRepository dormitoryRepository = new DormitoryRepository();
             dormitoryRepository.Create((dormitory));
+        }
+
+        public ActionResult RegisterGuard() {
+            #region ViewBag
             
             return RedirectToAction("Index");
 
