@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         /// <returns>List of Dormitories</returns>
         public List<DormitoryContract> GetDormitorySet()
         {
-            return db.DormitorySet.Select(d => d.ToContract()).ToList();
+            return db.DormitorySet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Dormitories/5

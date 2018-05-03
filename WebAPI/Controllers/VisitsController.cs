@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using VisitContract = DataContract.Objects.Visit;
 
 namespace WebAPI.Controllers
 {
@@ -24,9 +26,9 @@ namespace WebAPI.Controllers
         /// Returns JSON serialized array of Visit objects
         /// </summary>
         /// <returns>List of Visits</returns>
-        public List<Visit> GetVisitSet()
+        public List<VisitContract> GetVisitSet()
         {
-            return db.VisitSet.ToList();
+            return db.VisitSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Visits/5
@@ -35,10 +37,10 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Visit identifaction key</param>
         /// <returns>Http request result</returns>
-        [ResponseType(typeof(Visit))]
+        [ResponseType(typeof(VisitContract))]
         public IHttpActionResult GetVisit(int id)
         {
-            Visit visit = db.VisitSet.Find(id);
+            VisitContract visit = db.VisitSet.Find(id).ToContract();
             if (visit == null)
             {
                 return NotFound();
@@ -55,7 +57,7 @@ namespace WebAPI.Controllers
         /// <param name="visit">Updated Visit object which will replace existing Visit object in SQL database</param>
         /// <returns>Http request status</returns>
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutVisit(int id, Visit visit)
+        public IHttpActionResult PutVisit(int id, VisitContract visit)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(visit).State = EntityState.Modified;
+            db.Entry(visit.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -94,16 +96,35 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="visit">Visit to be inserted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Visit))]
-        public IHttpActionResult PostVisit(Visit visit)
+        [ResponseType(typeof(VisitContract))]
+        public IHttpActionResult PostVisit(VisitContract visit)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.VisitSet.Add(visit);
-            db.SaveChanges();
+            Visit temp = visit.ToInternal();
+            db.ResidentSet.Attach(temp.Resident);
+            db.GuardSet.Attach(temp.Guard);
+            db.DormitorySet.Attach(temp.Dormitory);
+            db.GuestSet.Attach(temp.Guest);
+            db.VisitSet.Add(temp);
+            
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(DbUpdateException)
+            {
+                if(VisitExists(visit.ID))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = visit.ID }, visit);
         }
@@ -114,16 +135,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Identification key of Visit to be deleted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Visit))]
+        [ResponseType(typeof(VisitContract))]
         public IHttpActionResult DeleteVisit(int id)
         {
-            Visit visit = db.VisitSet.Find(id);
+            Visit temp = db.VisitSet.Find(id);
+            VisitContract visit = temp.ToContract();
             if (visit == null)
             {
                 return NotFound();
             }
 
-            db.VisitSet.Remove(visit);
+            db.VisitSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(visit);

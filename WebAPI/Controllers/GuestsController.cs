@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using GuestContract = DataContract.Objects.Guest;
 
 namespace WebAPI.Controllers
 {
@@ -24,9 +26,9 @@ namespace WebAPI.Controllers
         /// Returns JSON serialized array of Guest objects
         /// </summary>
         /// <returns>List of Guests</returns>
-        public List<Guest> GetGuestSet()
+        public List<GuestContract> GetGuestSet()
         {
-            return db.GuestSet.ToList();
+            return db.GuestSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Guests/5
@@ -35,10 +37,10 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Guest identifaction key</param>
         /// <returns>Http request result</returns>
-        [ResponseType(typeof(Guest))]
+        [ResponseType(typeof(GuestContract))]
         public IHttpActionResult GetGuest(long id)
         {
-            Guest guest = db.GuestSet.Find(id);
+            GuestContract guest = db.GuestSet.Find(id).ToContract();
             if (guest == null)
             {
                 return NotFound();
@@ -55,7 +57,7 @@ namespace WebAPI.Controllers
         /// <param name="guest">Updated Guest object which will replace existing Guest object in SQL database</param>
         /// <returns>Http request status</returns>
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGuest(long id, Guest guest)
+        public IHttpActionResult PutGuest(long id, GuestContract guest)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(guest).State = EntityState.Modified;
+            db.Entry(guest.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -94,15 +96,15 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="guest">Guest to be inserted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Guest))]
-        public IHttpActionResult PostGuest(Guest guest)
+        [ResponseType(typeof(GuestContract))]
+        public IHttpActionResult PostGuest(GuestContract guest)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.GuestSet.Add(guest);
+            Guest temp = guest.ToInternal();
+            db.GuestSet.Add(temp);
 
             try
             {
@@ -129,16 +131,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Identification key of Guest to be deleted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Guest))]
+        [ResponseType(typeof(GuestContract))]
         public IHttpActionResult DeleteGuest(long id)
         {
-            Guest guest = db.GuestSet.Find(id);
+            Guest temp = db.GuestSet.Find(id);
+            GuestContract guest = temp.ToContract();
             if (guest == null)
             {
                 return NotFound();
             }
 
-            db.GuestSet.Remove(guest);
+            db.GuestSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(guest);

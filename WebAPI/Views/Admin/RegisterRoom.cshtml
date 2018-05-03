@@ -1,4 +1,5 @@
-﻿
+﻿﻿@model DataContract.Objects.Room
+
 @{
     ViewBag.Title = "RegisterRoom";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
@@ -6,20 +7,38 @@
 
 <h2>Register a Room</h2>
 
-
 <div>
-    <form action="">
-        <div class="form-group">
-            <label for="roomnumber">Room number:</label>
-            <input type="number" class="form-control" id="roomnumber">
+    @using (Html.BeginForm("CreateRoom", "Admin", FormMethod.Post, new { id = "submitForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
 
-        <label for="sel1">Select dormitory :</label>
-        <div>
-            @Html.DropDownList("AdminController", (IEnumerable
-                             <SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Dormitory.Name, "Dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Dormitory.Name, (IEnumerable<SelectListItem>)ViewBag.Dormitory,  new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.Dormitory.Name, "Dormitory is manditory field", new { @class = "text-danger" })
+            </div>
         </div>
-        <br />
-        <button type="submit" class="btn btn-default">Add</button> <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Admin")'">Back</button>
-    </form>
+
+        <br>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, "Number:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Number, "Number is manditory field", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    }
+
 </div>

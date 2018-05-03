@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         // GET: api/Administrators
         public List<AdministratorContract> GetAdministratorSet()
         {
-            return db.AdministratorSet.Select(a => a.ToContract()).ToList();
+            return db.AdministratorSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Administrators/5
@@ -77,8 +77,9 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            db.AdministratorSet.Add(administrator.ToInternal());
+            Administrator temp = administrator.ToInternal();
+            db.DormitorySet.Attach(temp.Dormitory);
+            db.AdministratorSet.Add(temp);
 
             try
             {
@@ -103,13 +104,14 @@ namespace WebAPI.Controllers
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult DeleteAdministrator(long id)
         {
-            AdministratorContract administrator = db.AdministratorSet.Find(id).ToContract();
+            Administrator temp = db.AdministratorSet.Find(id);
+            AdministratorContract administrator = temp.ToContract();
             if (administrator == null)
             {
                 return NotFound();
             }
 
-            db.AdministratorSet.Remove(administrator.ToInternal());
+            db.AdministratorSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(administrator);

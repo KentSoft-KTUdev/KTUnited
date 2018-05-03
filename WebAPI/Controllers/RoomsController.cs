@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using RoomContract = DataContract.Objects.Room;
 
 namespace WebAPI.Controllers
 {
@@ -24,9 +26,9 @@ namespace WebAPI.Controllers
         /// Returns JSON serialized array of Rooms objects
         /// </summary>
         /// <returns>List of Rooms</returns>
-        public List<Room> GetRoomSet()
+        public List<RoomContract> GetRoomSet()
         {
-            return db.RoomSet.ToList();
+            return db.RoomSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Rooms/5
@@ -35,10 +37,10 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Room identifaction key</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Room))]
+        [ResponseType(typeof(RoomContract))]
         public IHttpActionResult GetRoom(int id)
         {
-            Room room = db.RoomSet.Find(id);
+            RoomContract room = db.RoomSet.Find(id).ToContract();
             if (room == null)
             {
                 return NotFound();
@@ -55,7 +57,7 @@ namespace WebAPI.Controllers
         /// <param name="room">Updated Room object which will replace existing Room object in SQL database</param>
         /// <returns>Http request status</returns>
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutRoom(int id, Room room)
+        public IHttpActionResult PutRoom(int id, RoomContract room)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(room).State = EntityState.Modified;
+            db.Entry(room.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -94,15 +96,16 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="room">Room to be inserted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Room))]
-        public IHttpActionResult PostRoom(Room room)
+        [ResponseType(typeof(RoomContract))]
+        public IHttpActionResult PostRoom(RoomContract room)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.RoomSet.Add(room);
+            Room temp = room.ToInternal();
+            db.DormitorySet.Attach(temp.Dormitory);
+            db.RoomSet.Add(temp);
 
             try
             {
@@ -129,16 +132,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Identification key of Room to be deleted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Room))]
+        [ResponseType(typeof(RoomContract))]
         public IHttpActionResult DeleteRoom(int id)
         {
-            Room room = db.RoomSet.Find(id);
+            Room temp = db.RoomSet.Find(id);
+            RoomContract room = temp.ToContract();
             if (room == null)
             {
                 return NotFound();
             }
 
-            db.RoomSet.Remove(room);
+            db.RoomSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(room);
