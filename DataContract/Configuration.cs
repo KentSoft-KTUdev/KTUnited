@@ -12,6 +12,7 @@ namespace DataContract
          * webapi-kentsoft.azurewebsites.net
          * localhost:64476
          */
-        public static string WebApiAdress = "http://localhost:64476/";
+        public static string WebApiAdress = "http://webapi-kentsoft.azurewebsites.net/";
+        //public static string WebApiAdress = "http://localhost:64476/";
     }
 }
