@@ -10,6 +10,8 @@ namespace DataContract.Objects
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
         public Int64 PersonalCode { get; set; }
         public int RoomId { get; set; }
         public int DormitoryId { get; set; }

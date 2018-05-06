@@ -100,6 +100,23 @@ namespace WebAPI.Controllers
             return CreatedAtRoute("DefaultApi", new { id = administrator.PersonalCode }, administrator);
         }
 
+        public IHttpActionResult Login(string login, string password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var obj = db.AdministratorSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                return Ok();
+            }
+            catch (System.ArgumentNullException)
+            {
+                return BadRequest("User wasn't found by credentials entered");
+            }
+        }
+
         // DELETE: api/Administrators/5
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult DeleteAdministrator(long id)

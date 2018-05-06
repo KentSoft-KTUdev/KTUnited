@@ -62,7 +62,9 @@ namespace WebAPI.Extensions
                 Name = entity.Name,
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
-                DormitoryId = entity.Dormitory.ID
+                DormitoryId = entity.Dormitory.ID,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return admin;
         }
@@ -81,7 +83,9 @@ namespace WebAPI.Extensions
                 Name = entity.Name,
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
-                Dormitory = adminDormitory
+                Dormitory = adminDormitory,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return admin;
         }
@@ -98,7 +102,9 @@ namespace WebAPI.Extensions
                 Name = entity.Name,
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
-                DormitoryId = entity.Dormitory.ID
+                DormitoryId = entity.Dormitory.ID,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return guard;
         }
@@ -118,7 +124,9 @@ namespace WebAPI.Extensions
                 Name = entity.Name,
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
-                Dormitory = guardDormitory
+                Dormitory = guardDormitory,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return guard;
         }
@@ -201,7 +209,9 @@ namespace WebAPI.Extensions
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
                 DormitoryId = entity.Dormitory.ID,
-                RoomId = entity.Room.ID
+                RoomId = entity.Room.ID,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return resi;
         }
@@ -224,7 +234,9 @@ namespace WebAPI.Extensions
                 PersonalCode = entity.PersonalCode,
                 Surname = entity.Surname,
                 Dormitory = resiDormitory,
-                Room = resiRoom
+                Room = resiRoom,
+                Username = entity.Username,
+                Password = entity.Password
             };
             return resi;
         }

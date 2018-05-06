@@ -10,6 +10,7 @@ namespace WebAPI.Controllers
 {
     public class AdminController : Controller
     {
+        private AdministratorRepository adminRep = new AdministratorRepository();
         // GET: Admin
         public ActionResult Index()
         {
@@ -74,29 +75,13 @@ namespace WebAPI.Controllers
         {
             DormitoryRepository dormitoryRepository = new DormitoryRepository();
             dormitoryRepository.Create((dormitory));
-        }
-
-        public ActionResult RegisterGuard() {
-            #region ViewBag
-            
             return RedirectToAction("Index");
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateGuard([Bind(Include = "PersonalCode,Name,Surname,Dormitory")] Guard guard)
+        public ActionResult CreateGuard([Bind(Include = "PersonalCode,Name,Surname,DormitoryId")] Guard guard)
         {
-            //DormitoryRepository dormitoryRepository = new DormitoryRepository();
-            //List<Dormitory> dormitories = dormitoryRepository.GetAll();
-            //for (int i = 0; i < dormitories.Count(); i++)
-            //{
-            //    if (dormitories[i].Name == guard.Dormitory.Name)
-            //    {
-            //        // add here, but the guard dormitory value is null because it only obtains string from web ?
-            //    }
-
-            //}
             GuardRepository guardRepository = new GuardRepository();
             guardRepository.Create((guard));
             return RedirectToAction("Index");
@@ -213,7 +198,35 @@ namespace WebAPI.Controllers
 
 
             return View();
+        }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login([Bind(Include = "Username,Password")]Administrator administrator)
+        {
+            if (adminRep.Login(administrator.Username, administrator.Password).IsSuccessStatusCode)
+            {
+                Session["Username"] = administrator.Username;
+                return RedirectToAction("ControlPanel");
+            }
+            return View(administrator);
+        }
+
+        public ActionResult ControlPanel()
+        {
+            if (Session["Username"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
     }
