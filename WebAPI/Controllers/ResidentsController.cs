@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using ResidentContract = DataContract.Objects.Resident;
 
 namespace WebAPI.Controllers
 {
@@ -24,9 +26,9 @@ namespace WebAPI.Controllers
         /// Returns JSON serialized array of Resident objects
         /// </summary>
         /// <returns>List of Residents</returns>
-        public List<Resident> GetResidentSet()
+        public List<ResidentContract> GetResidentSet()
         {
-            return db.ResidentSet.ToList();
+            return db.ResidentSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Residents/5
@@ -35,10 +37,10 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Resident identifaction key</param>
         /// <returns>Http request result</returns>
-        [ResponseType(typeof(Resident))]
+        [ResponseType(typeof(ResidentContract))]
         public IHttpActionResult GetResident(long id)
         {
-            Resident resident = db.ResidentSet.Find(id);
+            ResidentContract resident = db.ResidentSet.Find(id).ToContract();
             if (resident == null)
             {
                 return NotFound();
@@ -55,7 +57,7 @@ namespace WebAPI.Controllers
         /// <param name="resident">Updated Resident object which will replace existing Resident object in SQL database</param>
         /// <returns>Http request status</returns>
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutResident(long id, Resident resident)
+        public IHttpActionResult PutResident(long id, ResidentContract resident)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(resident).State = EntityState.Modified;
+            db.Entry(resident.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -94,15 +96,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="resident">Resident to be inserted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Resident))]
-        public IHttpActionResult PostResident(Resident resident)
+        [ResponseType(typeof(ResidentContract))]
+        public IHttpActionResult PostResident(ResidentContract resident)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.ResidentSet.Add(resident);
+            Resident temp = resident.ToInternal();
+            db.RoomSet.Attach(temp.Room);
+            db.DormitorySet.Attach(temp.Dormitory);
+            db.ResidentSet.Add(temp);
 
             try
             {
@@ -129,16 +133,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="id">Identification key of Resident to be deleted</param>
         /// <returns>Http request status</returns>
-        [ResponseType(typeof(Resident))]
+        [ResponseType(typeof(ResidentContract))]
         public IHttpActionResult DeleteResident(long id)
         {
-            Resident resident = db.ResidentSet.Find(id);
+            Resident temp = db.ResidentSet.Find(id);
+            ResidentContract resident = temp.ToContract();
             if (resident == null)
             {
                 return NotFound();
             }
 
-            db.ResidentSet.Remove(resident);
+            db.ResidentSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(resident);

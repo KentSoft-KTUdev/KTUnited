@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
+using WebAPI.Extensions;
+using GuardContract = DataContract.Objects.Guard;
 
 namespace WebAPI.Controllers
 {
@@ -17,16 +19,16 @@ namespace WebAPI.Controllers
         private MainDbModelContainer1 db = new MainDbModelContainer1();
 
         // GET: api/Guards
-        public List<Guard> GetGuardSet()
+        public List<GuardContract> GetGuardSet()
         {
-            return db.GuardSet.ToList();
+            return db.GuardSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Guards/5
-        [ResponseType(typeof(Guard))]
+        [ResponseType(typeof(GuardContract))]
         public IHttpActionResult GetGuard(long id)
         {
-            Guard guard = db.GuardSet.Find(id);
+            GuardContract guard = db.GuardSet.Find(id).ToContract();
             if (guard == null)
             {
                 return NotFound();
@@ -37,7 +39,7 @@ namespace WebAPI.Controllers
 
         // PUT: api/Guards/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGuard(long id, Guard guard)
+        public IHttpActionResult PutGuard(long id, GuardContract guard)
         {
             if (!ModelState.IsValid)
             {
@@ -48,8 +50,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-
-            db.Entry(guard).State = EntityState.Modified;
+            db.Entry(guard.ToInternal()).State = EntityState.Modified;
 
             try
             {
@@ -71,15 +72,16 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/Guards
-        [ResponseType(typeof(Guard))]
-        public IHttpActionResult PostGuard(Guard guard)
+        [ResponseType(typeof(GuardContract))]
+        public IHttpActionResult PostGuard(GuardContract guard)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.GuardSet.Add(guard);
+            Guard temp = guard.ToInternal();
+            db.DormitorySet.Attach(temp.Dormitory);
+            db.GuardSet.Add(temp);
 
             try
             {
@@ -101,16 +103,17 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Guards/5
-        [ResponseType(typeof(Guard))]
+        [ResponseType(typeof(GuardContract))]
         public IHttpActionResult DeleteGuard(long id)
         {
-            Guard guard = db.GuardSet.Find(id);
+            Guard temp = db.GuardSet.Find(id);
+            GuardContract guard = temp.ToContract();
             if (guard == null)
             {
                 return NotFound();
             }
 
-            db.GuardSet.Remove(guard);
+            db.GuardSet.Remove(temp);
             db.SaveChanges();
 
             return Ok(guard);

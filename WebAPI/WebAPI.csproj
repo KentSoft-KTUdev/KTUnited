@@ -441,6 +441,7 @@
     <Content Include="Views\Admin\RegisterDormitory.cshtml" />
     <Content Include="Views\Resident\RegisterVisit.cshtml" />
     <Content Include="Views\Admin\RegisterRoom.cshtml" />
+    <Content Include="Views\Resident\MyVisits.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

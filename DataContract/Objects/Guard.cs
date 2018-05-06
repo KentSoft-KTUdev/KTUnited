@@ -11,6 +11,6 @@ namespace DataContract.Objects
         public Int64 PersonalCode { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public Dormitory Dormitory { get; set; }
+        public int DormitoryId { get; set; }
     }
 }
