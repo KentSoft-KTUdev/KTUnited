@@ -5,13 +5,8 @@
 }
 
 <h2>Create a Dormitory</h2>
-<div>
-    @using (Html.BeginForm("CreateDormitory", "Admin", FormMethod.Post, new { id = "submitForm" }))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-horizontal">
 <body>
-    @using (Html.BeginForm("Create", "Admin", FormMethod.Post, new { id = "submitForm" }))
+    @using (Html.BeginForm("CreateDormitory", "Admin", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
@@ -41,5 +36,4 @@
             </div>
         </div>
     }
-</div>
 </body>

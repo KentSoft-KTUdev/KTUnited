@@ -58,6 +58,8 @@
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PersonalCode" Type="bigint" Nullable="false" />
     <Property Name="RoomID" Type="int" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Dormitory_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GuestSet">
@@ -96,6 +98,8 @@
     <Property Name="PersonalCode" Type="bigint" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Dormitory_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="AdministratorSet">
@@ -105,6 +109,8 @@
     <Property Name="PersonalCode" Type="bigint" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Dormitory_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="RoomSet">
@@ -285,6 +291,8 @@
           <NavigationProperty Name="Visit" Relationship="MainDbModel.ResidentVisit" FromRole="Resident" ToRole="Visit" />
           <NavigationProperty Name="Room" Relationship="MainDbModel.RoomResident" FromRole="Resident" ToRole="Room" />
           <Property Name="RoomID" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Guest">
           <Key>
@@ -349,6 +357,8 @@
           <Property Name="Surname" Type="String" Nullable="false" />
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.GuardDormitory" FromRole="Guard" ToRole="Dormitory" />
           <NavigationProperty Name="Visit" Relationship="MainDbModel.GuardVisit" FromRole="Guard" ToRole="Visit" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="GuardDormitory">
           <End Type="MainDbModel.Guard" Role="Guard" Multiplicity="*" />
@@ -374,6 +384,8 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Surname" Type="String" Nullable="false" />
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.AdministratorDormitory" FromRole="Administrator" ToRole="Dormitory" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="AdministratorDormitory">
           <End Type="MainDbModel.Administrator" Role="Administrator" Multiplicity="0..1" >
@@ -445,6 +457,8 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />
           <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -485,6 +499,8 @@
           <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -494,6 +510,8 @@
           <ScalarProperty Name="PersonalCode" ColumnName="PersonalCode" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

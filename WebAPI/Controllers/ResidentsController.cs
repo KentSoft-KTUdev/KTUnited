@@ -49,6 +49,18 @@ namespace WebAPI.Controllers
             return Ok(resident);
         }
 
+        [ResponseType(typeof(ResidentContract))]
+        public IHttpActionResult GetResident(string user)
+        {
+            ResidentContract resident = db.ResidentSet.FirstOrDefault(x => x.Username == user).ToContract();
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(resident);
+        }
+
         // PUT: api/Residents/5
         /// <summary>
         /// Updates particular Resident object in SQL database
@@ -125,6 +137,30 @@ namespace WebAPI.Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = resident.PersonalCode }, resident);
+        }
+
+        public IHttpActionResult Login(string login, string password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var obj = db.ResidentSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                if (obj != null)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Bad login credentials");
+                }
+            }
+            catch (System.ArgumentNullException)
+            {
+                return BadRequest("User wasn't found by credentials entered");
+            }
         }
 
         // DELETE: api/Residents/5

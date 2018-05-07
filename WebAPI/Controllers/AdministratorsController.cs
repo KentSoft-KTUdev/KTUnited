@@ -34,6 +34,18 @@ namespace WebAPI.Controllers
             return Ok(administrator);
         }
 
+        [ResponseType(typeof(AdministratorContract))]
+        public IHttpActionResult GetAdministrator(string user)
+        {
+            AdministratorContract administrator = db.AdministratorSet.FirstOrDefault(x=> x.Username == user).ToContract();
+            if (administrator == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(administrator);
+        }
+
         // PUT: api/Administrators/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAdministrator(long id, AdministratorContract administrator)
@@ -98,6 +110,30 @@ namespace WebAPI.Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = administrator.PersonalCode }, administrator);
+        }
+
+        public IHttpActionResult Login(string login, string password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var obj = db.AdministratorSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                if(obj != null)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Bad login credentials");
+                }
+            }
+            catch (System.ArgumentNullException)
+            {
+                return BadRequest("User wasn't found by credentials entered");
+            }
         }
 
         // DELETE: api/Administrators/5

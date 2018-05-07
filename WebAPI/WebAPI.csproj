@@ -420,7 +420,7 @@
     <Content Include="Views\Shared\_WebAppLayout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\Resident\Index.cshtml" />
-    <Content Include="Views\Admin\ResidentForm.cshtml" />
+    <Content Include="Views\Admin\RegisterResident.cshtml" />
     <Content Include="Views\Resident\RegisterGuest.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
@@ -438,10 +438,12 @@
     <Content Include="Views\Guest\Index.cshtml" />
     <Content Include="Views\Resident\RegisterVisitedGuest.cshtml" />
     <Content Include="Views\Admin\RegisterGuard.cshtml" />
-    <Content Include="Views\Admin\RegisterDormitory.cshtml" />
+    <Content Include="Views\Admin\CreateDormitory.cshtml" />
     <Content Include="Views\Resident\RegisterVisit.cshtml" />
-    <Content Include="Views\Admin\RegisterRoom.cshtml" />
+    <Content Include="Views\Admin\CreateRoom.cshtml" />
     <Content Include="Views\Resident\MyVisits.cshtml" />
+    <Content Include="Views\Admin\ControlPanel.cshtml" />
+    <Content Include="Views\Resident\ControlPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
