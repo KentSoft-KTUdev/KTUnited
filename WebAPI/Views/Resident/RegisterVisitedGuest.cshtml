@@ -1,19 +1,30 @@
-﻿
+﻿@model DataContract.Objects.Visit
 @{
     ViewBag.Title = "RegisterVisitedGuest";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
 
-<h2>RegisterVisit</h2>
+<h2>Register visit (existing guest)</h2>
+<body>
+    @using (Html.BeginForm("RegisterVisitedGuest", "Resident", FormMethod.Post, new { id = "submitForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4>Fill in details about visit</h4>
+            <hr />
+        </div>
+        @Html.ValidationSummary(true, "Test", new { @class = "text-danger" })
 
-<form action="">
+        <div class="form-group">
+            @Html.Label("GuestLabel", "Guest:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GuestId", null, new { @class = "form-control" } )
+                @Html.ValidationMessage("GuestId", "Guest is manditory field", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <label for="sel1">Select guest from list :</label>
-    <div>
-        @Html.DropDownList("ResidentController", (IEnumerable
-                             <SelectListItem>)ViewBag.Guests, new { @class = "form-control" })
-    </div>
-    <br />
-
-    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("RegisterVisit", "Resident")'">Submit</button>  <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("RegisterGuest", "Resident")'">Register new</button>
-</form>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    }
+</body>
