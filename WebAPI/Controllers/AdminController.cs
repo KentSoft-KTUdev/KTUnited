@@ -20,13 +20,17 @@ namespace WebAPI.Controllers
         // GET: Admin
         public ActionResult Index(Administrator administrator)
         {
+            if (IsLoggedOn())
+            {
+                return RedirectToAction("ControlPanel");
+            }
             return View(administrator);
         }
 
         public ActionResult RegisterResident()
         {
             #region ViewBag
-            if (Session["Username"] != null)
+            if (IsLoggedOn())
             {
                 List<Dormitory> dormitories = dormitoryRepository.GetAll();
                 List<SelectListItem> Dormitory = new List<SelectListItem>();
@@ -77,13 +81,12 @@ namespace WebAPI.Controllers
             ViewBag.DefaultPassword = resident.Password;
             residentRepository.Create((resident));
             return View();
-
         }
 
 
         public ActionResult CreateDormitory()
         {
-            if (Session["Username"] != null)
+            if (IsLoggedOn())
             {
                 return View();
             }
@@ -110,7 +113,7 @@ namespace WebAPI.Controllers
 
         public ActionResult RegisterGuard()
         {
-            if (Session["Username"] != null)
+            if (IsLoggedOn())
             {
                 #region ViewBag
                 List<Dormitory> dormitories = dormitoryRepository.GetAll();
@@ -147,7 +150,7 @@ namespace WebAPI.Controllers
 
         public ActionResult CreateRoom()
         {
-            if (Session["Username"] != null)
+            if (IsLoggedOn())
             {
                 #region ViewBag
                 List<Dormitory> dormitories = dormitoryRepository.GetAll();
@@ -174,6 +177,10 @@ namespace WebAPI.Controllers
 
         public ActionResult Login()
         {
+            if (IsLoggedOn())
+            {
+                RedirectToAction("ControlPanel");
+            }
             return View();
         }
 
@@ -191,7 +198,7 @@ namespace WebAPI.Controllers
 
         public ActionResult ControlPanel()
         {
-            if (Session["Username"] != null)
+            if (IsLoggedOn())
             {
                 return View();
             }
@@ -203,6 +210,15 @@ namespace WebAPI.Controllers
             Random random = new Random();
             var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
             return new string(chars.Select(c => chars[random.Next(chars.Length)]).Take(8).ToArray());
+        }
+
+        private bool IsLoggedOn()
+        {
+            if (Session["Username"] != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
