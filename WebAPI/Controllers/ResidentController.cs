@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         // GET: Resident
         public ActionResult Index()
         {
-            if(IsLoggedOn())
+            if (IsLoggedOn())
             {
                 return RedirectToAction("ControlPanel");
             }
@@ -46,26 +46,20 @@ namespace WebAPI.Controllers
 
         public ActionResult MyVisits()
         {
-            #region ViewBag
-            VisitRepository visitRepository = new VisitRepository();
-            List<Visit> visit = visitRepository.GetAll();
-            List<SelectListItem> Visits = new List<SelectListItem>();
-            if (visit.Count == 0)
+            if (IsLoggedOn())
             {
-                Visits.Add(new SelectListItem { Text = "No upcoming visits", Value = "1" });
-            }
-            else
-            {
-                for (int i = 0; i < visit.Count; i++)
-                {
-                    Visits.Add(new SelectListItem { Text = visit[i].VisitRegDateTime.ToString(), Value = (i + 1).ToString() });
+                #region ViewBag
+                List<Visit> visits = visitRepository.GetResidentVisits((long)Session["ResidentID"]);
+                List<Guest> guests = guestRepository.GetResidentGuests((long)Session["ResidentID"]);
+                List<Guard> guards = guardRepository.GetAll();
+                ViewBag.Visits = visits;
+                ViewBag.Guests = guests;
+                ViewBag.Guards = guards;
+                #endregion
 
-                }
+                return View();
             }
-            ViewBag.Visits = Visits;
-            #endregion
-
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -97,7 +91,7 @@ namespace WebAPI.Controllers
         public ActionResult RegisterVisitedGuest()
         {
             #region ViewBag
-            if(IsLoggedOn())
+            if (IsLoggedOn())
             {
                 List<Guest> guest = guestRepository.GetAll();
                 List<SelectListItem> Guests = new List<SelectListItem>();
@@ -117,12 +111,6 @@ namespace WebAPI.Controllers
                 return View();
             }
             return RedirectToAction("Index");
-        }
-
-        // sukurkit kazka kas butu kaip to gyventojo vizitu sarasas
-        public ActionResult Visits()
-        {
-            return View();
         }
 
         public ActionResult Login()
@@ -152,6 +140,7 @@ namespace WebAPI.Controllers
         {
             if (IsLoggedOn())
             {
+                ViewBag.Name = Session["Username"];
                 return View();
             }
             return RedirectToAction("Index");

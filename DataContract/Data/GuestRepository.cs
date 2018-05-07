@@ -36,7 +36,7 @@ namespace DataContract.Data
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -86,6 +86,36 @@ namespace DataContract.Data
             {
                 throw ex;
             }
+        }
+
+        public List<Guest> GetResidentGuests(long residentPersonalCode)
+        {
+            VisitRepository visitRepository = new VisitRepository();
+            List<Visit> visits = visitRepository.GetResidentVisits(residentPersonalCode).Distinct(new VisitEqualityComparerByGuest()).ToList();
+            List<Guest> guests = new List<Guest>();
+            foreach (Visit visit in visits)
+            {
+                try
+                {
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        Guest scopeGuest = new Guest();
+                        httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                        httpClient.DefaultRequestHeaders.Accept.Clear();
+                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage response = httpClient.GetAsync("api/Guests/" + visit.GuestId).Result;
+                        response.EnsureSuccessStatusCode();
+                        string jsonContents = response.Content.ReadAsStringAsync().Result;
+                        scopeGuest = JsonConvert.DeserializeObject<Guest>(jsonContents);
+                        guests.Add(scopeGuest);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return guests;
         }
 
         public Guest Read(object id)
