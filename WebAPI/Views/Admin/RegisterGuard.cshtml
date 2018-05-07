@@ -8,7 +8,7 @@
 <h2>Register a Guard</h2>
 
 <body>
-    @using (Html.BeginForm("CreateGuard", "Admin", FormMethod.Post, new { id = "submitForm" }))
+    @using (Html.BeginForm("RegisterGuard", "Admin", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
@@ -60,7 +60,7 @@
         <div class="form-group">
             @Html.Label("DormitoryIdLabel", "Assign to dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("DormitoryId", (IEnumerable<SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" })
+                @Html.DropDownList("DormitoryId", null, new { @class = "form-control" })
                 @Html.ValidationMessage("DormitoryId", "Dormitory is manditory field", new { @class = "text-danger" })
             </div>
         </div>
