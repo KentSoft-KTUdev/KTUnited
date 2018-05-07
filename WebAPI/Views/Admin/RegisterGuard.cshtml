@@ -1,4 +1,4 @@
-﻿﻿@model Tuple<DataContract.Objects.Guard, DataContract.Objects.Dormitory>
+﻿﻿@model DataContract.Objects.Guard
 
 @{
     ViewBag.Title = "RegisterGuard";
@@ -17,39 +17,53 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(tuple => tuple.Item1.PersonalCode, "Personal code:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PersonalCode, "Personal code:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(tuple => tuple.Item1.PersonalCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(tuple => tuple.Item1.PersonalCode, "Personal code is manditory field", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PersonalCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PersonalCode, "Personal code is manditory field", new { @class = "text-danger" })
             </div>
         </div>
 
 
         <div class="form-group">
-            @Html.LabelFor(tuple => tuple.Item1.Name, "Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, "Name:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(tuple => tuple.Item1.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(tuple => tuple.Item1.Name, "Name is manditory field", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "Name is manditory field", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(tuple => tuple.Item1.Surname, "Surname:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Surname, "Surname:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(tuple => tuple.Item1.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(tuple => tuple.Item1.Surname, "Surname is manditory field", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Surname, "Surname is manditory field", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(tuple => tuple.Item2.Name, "Dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Username, "System login:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(tuple => tuple.Item2.Name, (IEnumerable<SelectListItem>)ViewBag.Dormitory, new { @class = "form-control", id = "DormitoryId" })
-                @Html.ValidationMessageFor(tuple => tuple.Item2.Name, "Dormitory is manditory field", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Name+Surname" } })
+                @Html.ValidationMessageFor(model => model.Username, "Login is manditory field", new { @class = "text-danger" })
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, "System password:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.DefaultPassword } })
+                @Html.ValidationMessageFor(model => model.Password, "Surname is manditory field", new { @class = "text-danger" })
+            </div>
+        </div>
 
+        <div class="form-group">
+            @Html.Label("DormitoryIdLabel", "Assign to dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DormitoryId", (IEnumerable<SelectListItem>)ViewBag.Dormitory, new { @class = "form-control" })
+                @Html.ValidationMessage("DormitoryId", "Dormitory is manditory field", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

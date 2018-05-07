@@ -109,7 +109,14 @@ namespace WebAPI.Controllers
             try
             {
                 var obj = db.AdministratorSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
-                return Ok();
+                if(obj != null)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Bad login credentials");
+                }
             }
             catch (System.ArgumentNullException)
             {

@@ -5,16 +5,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DataContract.Objects;
+using System.Net.Http;
 
 namespace WebAPI.Controllers
 {
     public class AdminController : Controller
     {
-        private AdministratorRepository adminRep = new AdministratorRepository();
+        private AdministratorRepository administratorRepository = new AdministratorRepository();
+        private DormitoryRepository dormitoryRepository = new DormitoryRepository();
+        private GuardRepository guardRepository = new GuardRepository();
         // GET: Admin
-        public ActionResult Index()
+        public ActionResult Index(Administrator administrator)
         {
-            return View();
+            return View(administrator);
         }
 
         public ActionResult ResidentForm()
@@ -64,28 +67,38 @@ namespace WebAPI.Controllers
         }
 
 
-        public ActionResult RegisterDormitory() {
-
-            return View();
+        public ActionResult RegisterDormitory()
+        {
+            if (Session["Username"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateDormitory([Bind(Include = "Name,Adress")] Dormitory dormitory)
         {
-            DormitoryRepository dormitoryRepository = new DormitoryRepository();
             dormitoryRepository.Create((dormitory));
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateGuard([Bind(Include = "PersonalCode,Name,Surname,DormitoryId")] Guard guard)
+        public ActionResult CreateGuard([Bind(Include = "PersonalCode,Name,Surname,DormitoryId,Username,Password")] Guard guard)
         {
-            GuardRepository guardRepository = new GuardRepository();
-            guardRepository.Create((guard));
-            return RedirectToAction("Index");
-
+            if(guardRepository.Create((guard)).IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else
+            {
+                return View("RegisterGuard", guard);
+            } 
         }
 
         [HttpPost]
@@ -165,39 +178,36 @@ namespace WebAPI.Controllers
             return View();
         }
 
-        public ActionResult RegisterGuard()
+        public ActionResult RegisterGuard(Guard guard)
         {
-            #region ViewBag
-            DormitoryRepository dormitoryRepository = new DormitoryRepository();
-            List<Dormitory> dormitories = dormitoryRepository.GetAll();
-
-
-            List<SelectListItem> Dormitory = new List<SelectListItem>();
-            if (dormitories.Count() == 0)
+            if (Session["Username"] != null)
             {
-                Dormitory.Add(new SelectListItem { Text = "Nėra registruotų bendrabučių", Value = "1" });
+                #region ViewBag
+                List<Dormitory> dormitories = dormitoryRepository.GetAll();
+                List<SelectListItem> Dormitory = new List<SelectListItem>();
+                if (dormitories.Count == 0)
+                {
+                    Dormitory.Add(new SelectListItem { Text = "Nėra registruotų bendrabučių", Value = "-1" });
+                }
+                else
+                {
+                    //default value
+                    Dormitory.Add(new SelectListItem { Text = "", Value = "-1" });
+                    for (int i = 0; i < dormitories.Count; i++)
+                    {
+                        var temp = new SelectListItem { Text = dormitories[i].Name, Value = dormitories[i].ID.ToString() };
+                        Dormitory.Add(temp);
+                    }
+                }
+                ViewBag.Dormitory = Dormitory;
+                ViewBag.DefaultPassword = GetRandomAlphaNumeric();
+                #endregion
+                return View();
             }
             else
             {
-                Dormitory.Add(new SelectListItem { Text = "", Value = "1" });
-                for (int i = 0; i < dormitories.Count(); i++)
-                {
-                    var temp = new SelectListItem { Text = dormitories[i].Name, Value = (i + 2).ToString() };
-                    Dormitory.Add(temp);
-
-                }
+                return RedirectToAction("Index");
             }
-            ViewBag.Dormitory = Dormitory;
-            #endregion
-            GuardRepository guards = new GuardRepository();
-            List<Guard> guardList = guards.GetAll();
-            if (guardList.Count() == 0)
-            {
-                Console.Write("Liudna");
-            }
-
-
-            return View();
         }
 
         public ActionResult Login()
@@ -209,12 +219,12 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login([Bind(Include = "Username,Password")]Administrator administrator)
         {
-            if (adminRep.Login(administrator.Username, administrator.Password).IsSuccessStatusCode)
+            if (administratorRepository.Login(administrator.Username, administrator.Password).IsSuccessStatusCode)
             {
                 Session["Username"] = administrator.Username;
                 return RedirectToAction("ControlPanel");
             }
-            return View(administrator);
+            return RedirectToAction("Index", administrator);
         }
 
         public ActionResult ControlPanel()
@@ -229,5 +239,11 @@ namespace WebAPI.Controllers
             }
         }
 
+        private string GetRandomAlphaNumeric()
+        {
+            Random random = new Random();
+            var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(chars.Select(c => chars[random.Next(chars.Length)]).Take(8).ToArray());
+        }
     }
 }
