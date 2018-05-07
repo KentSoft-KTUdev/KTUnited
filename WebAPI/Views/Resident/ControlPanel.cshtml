@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "ControlPanel";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+<body>
+    <h2>ControlPanel</h2>
+    <div align="center">
+        <h1>Welcome @ViewBag.Name</h1>
+        <p>Choose an option..</p>
+
+        <div class="btn-group-vertical" data-toggle="buttons">
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterGuest", "Resident")'">Register a new guest</button>
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterVisitedGuest", "Resident")'">Register a visit</button>
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("MyVisits", "Resident")'">Upcoming visitors</button>
+        </div>
+    </div>
+</body>

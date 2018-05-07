@@ -10,9 +10,18 @@ namespace WebAPI.Controllers
 {
     public class ResidentController : Controller
     {
+        private DormitoryRepository dormitoryRepository = new DormitoryRepository();
+        private GuardRepository guardRepository = new GuardRepository();
+        private RoomRepository roomRepository = new RoomRepository();
+        private ResidentRepository residentRepository = new ResidentRepository();
+
         // GET: Resident
         public ActionResult Index()
         {
+            if(IsLoggedOn())
+            {
+                return RedirectToAction("ControlPanel");
+            }
             return View();
         }
 
@@ -88,6 +97,47 @@ namespace WebAPI.Controllers
         public ActionResult Visits()
         {
             return View();
+        }
+
+        public ActionResult Login()
+        {
+            if (IsLoggedOn())
+            {
+                return RedirectToAction("ControlPanel");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login([Bind(Include = "Username,Password")]Resident resident)
+        {
+            if (residentRepository.Login(resident.Username, resident.Password).IsSuccessStatusCode)
+            {
+                resident = residentRepository.ReadByUsername(resident.Username);
+                Session["Username"] = resident.Username;
+                Session["ResidentID"] = resident.PersonalCode;
+                return RedirectToAction("ControlPanel");
+            }
+            return RedirectToAction("Index", resident);
+        }
+
+        public ActionResult ControlPanel()
+        {
+            if (IsLoggedOn())
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
+        private bool IsLoggedOn()
+        {
+            if (Session["ResidentID"] != null && residentRepository.Read(Session["ResidentID"]).Username.Equals(Session["Username"]))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

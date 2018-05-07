@@ -34,6 +34,18 @@ namespace WebAPI.Controllers
             return Ok(administrator);
         }
 
+        [ResponseType(typeof(AdministratorContract))]
+        public IHttpActionResult GetAdministrator(string user)
+        {
+            AdministratorContract administrator = db.AdministratorSet.FirstOrDefault(x=> x.Username == user).ToContract();
+            if (administrator == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(administrator);
+        }
+
         // PUT: api/Administrators/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAdministrator(long id, AdministratorContract administrator)

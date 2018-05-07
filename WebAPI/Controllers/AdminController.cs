@@ -18,13 +18,13 @@ namespace WebAPI.Controllers
         private ResidentRepository residentRepository = new ResidentRepository();
 
         // GET: Admin
-        public ActionResult Index(Administrator administrator)
+        public ActionResult Index()
         {
-            if (IsLoggedOn())
+            if(IsLoggedOn())
             {
                 return RedirectToAction("ControlPanel");
             }
-            return View(administrator);
+            return View();
         }
 
         public ActionResult RegisterResident()
@@ -190,7 +190,9 @@ namespace WebAPI.Controllers
         {
             if (administratorRepository.Login(administrator.Username, administrator.Password).IsSuccessStatusCode)
             {
+                administrator = administratorRepository.ReadByUsername(administrator.Username);
                 Session["Username"] = administrator.Username;
+                Session["AdminID"] = administrator.PersonalCode;
                 return RedirectToAction("ControlPanel");
             }
             return RedirectToAction("Index", administrator);
@@ -214,7 +216,7 @@ namespace WebAPI.Controllers
 
         private bool IsLoggedOn()
         {
-            if (Session["Username"] != null)
+            if (Session["AdminID"] != null && administratorRepository.Read(Session["AdminID"]).Username.Equals(Session["Username"]))
             {
                 return true;
             }

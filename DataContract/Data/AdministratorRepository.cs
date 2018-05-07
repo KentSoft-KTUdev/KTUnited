@@ -141,6 +141,29 @@ namespace DataContract.Data
             }
         }
 
+        public Administrator ReadByUsername(string user)
+        {
+            try
+            {
+                Administrator admin = new Administrator();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.GetAsync("api/Administrators?user=" + user).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    admin = JsonConvert.DeserializeObject<Administrator>(jsonContents);
+                }
+                return admin;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public HttpResponseMessage Update(object id, Administrator entity)
         {
             try
