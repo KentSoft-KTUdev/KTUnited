@@ -27,6 +27,8 @@ namespace WebAPI.Controllers
             return View();
         }
 
+
+
         public ActionResult RegisterResident()
         {
             #region ViewBag
@@ -76,11 +78,15 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RegisterResident([Bind(Include = "Name,Surname,PersonalCode,RoomId,DormitoryId,Password,Username")] Resident resident)
         {
-            ViewBag.RoomId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.RoomId);
-            ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.DormitoryId);
-            ViewBag.DefaultPassword = resident.Password;
-            residentRepository.Create((resident));
-            return View();
+            if (IsLoggedOn())
+            {
+                ViewBag.RoomId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.RoomId);
+                ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.DormitoryId);
+                ViewBag.DefaultPassword = resident.Password;
+                if (residentRepository.Create((resident)).ReasonPhrase == "Created")
+                    return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
         }
 
 
@@ -97,18 +103,28 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateDormitory([Bind(Include = "Name,Adress")] Dormitory dormitory)
         {
-            dormitoryRepository.Create((dormitory));
-            return View();
+            if (IsLoggedOn())
+            {
+                if (dormitoryRepository.Create((dormitory)).ReasonPhrase == "Created")
+                    return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
+            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterGuard([Bind(Include = "PersonalCode,Name,Surname,DormitoryId,Username,Password")] Guard guard)
         {
-            ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", guard.DormitoryId);
-            ViewBag.DefaultPassword = guard.Password;
-            guardRepository.Create(guard);
-            return View();
+
+            if (IsLoggedOn())
+            {
+                ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", guard.DormitoryId);
+                ViewBag.DefaultPassword = guard.Password;
+                if (guardRepository.Create(guard).ReasonPhrase == "Created")
+                    return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult RegisterGuard()
@@ -144,8 +160,14 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateRoom([Bind(Include = "DormitoryId,Number")] Room room)
         {
-            ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", room.DormitoryId);
-            return View();
+            if (IsLoggedOn())
+            {
+                ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", room.DormitoryId);
+                if (roomRepository.Create((room)).ReasonPhrase == "Created")
+                    return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
+           
         }
 
         public ActionResult CreateRoom()
@@ -221,6 +243,15 @@ namespace WebAPI.Controllers
                 return true;
             }
             return false;
+        }
+
+        public ActionResult Successful()
+        {
+            if (IsLoggedOn())
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
         }
     }
 }

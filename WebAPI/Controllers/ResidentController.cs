@@ -27,6 +27,15 @@ namespace WebAPI.Controllers
             return View();
         }
 
+        public ActionResult Successful()
+        {
+            if (IsLoggedOn())
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult RegisterGuest()
         {
             if (IsLoggedOn())
@@ -40,8 +49,14 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RegisterGuest([Bind(Include = "Name,Surname,PersonalCode")] Guest guest)
         {
-            guestRepository.Create((guest));
-            return View();
+            if (IsLoggedOn())
+            {
+                //System.Net.Http.HttpResponseMessage message = new System.Net.Http.HttpResponseMessage();
+                //message.ReasonPhrase = "Created";
+                if (guestRepository.Create((guest)).ReasonPhrase == "Created")
+                return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult MyVisits()
@@ -66,26 +81,32 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RegisterVisitedGuest([Bind(Include = "GuestId")] Visit visit)
         {
-            Resident temp = residentRepository.Read(Session["ResidentID"]);
-
-            visit.IsOver = false;
-            visit.ResidentId = temp.PersonalCode;
-            visit.DormitoryId = temp.DormitoryId;
-            //tikroji sukurimo data bus priskirta tada kai iseis zmogus t.y. kai patvirtins guard
-            visit.VisitRegDateTime = DateTime.MaxValue;
-            //same shit
-            visit.VisitEndDateTime = DateTime.MaxValue;
-            //cia reikes tureti viena default guarda, kuri priskirsim ir kai tikrasis tvirtina - pasikeicia i normalu
-            visit.GuardId = guardRepository.Read(111).PersonalCode;
-            visitRepository.Create(visit);
-            List<SelectListItem> Guests = new List<SelectListItem>();
-            foreach (Guest guest in guestRepository.GetAll())
+            if (IsLoggedOn())
             {
-                Guests.Add(new SelectListItem { Text = guest.Name + " " + guest.Surname, Value = guest.PersonalCode.ToString() });
+                Resident temp = residentRepository.Read(Session["ResidentID"]);
 
+                visit.IsOver = false;
+                visit.ResidentId = temp.PersonalCode;
+                visit.DormitoryId = temp.DormitoryId;
+                //tikroji sukurimo data bus priskirta tada kai iseis zmogus t.y. kai patvirtins guard
+                visit.VisitRegDateTime = DateTime.MaxValue;
+                //same shit
+                visit.VisitEndDateTime = DateTime.MaxValue;
+                //cia reikes tureti viena default guarda, kuri priskirsim ir kai tikrasis tvirtina - pasikeicia i normalu
+                visit.GuardId = guardRepository.Read(111).PersonalCode;
+                
+                List<SelectListItem> Guests = new List<SelectListItem>();
+                foreach (Guest guest in guestRepository.GetAll())
+                {
+                    Guests.Add(new SelectListItem { Text = guest.Name + " " + guest.Surname, Value = guest.PersonalCode.ToString() });
+
+                }
+                ViewBag.GuestId = Guests;
+                if(visitRepository.Create(visit).ReasonPhrase == "Created");
+                return RedirectToAction("Successful");
             }
-            ViewBag.GuestId = Guests;
-            return View(visit);
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult RegisterVisitedGuest()
@@ -145,6 +166,7 @@ namespace WebAPI.Controllers
             }
             return RedirectToAction("Index");
         }
+        
 
         private bool IsLoggedOn()
         {
