@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "ControlPanel";
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+}
+<body>
+    <h2>ControlPanel</h2>
+    <div align="center">
+        <h1>You are Admin</h1>
+        <p>Choose an option..</p>
+
+        <div class="btn-group-vertical" data-toggle="buttons">
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterResident", "Admin")'">Register a resident</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterGuard", "Admin")'">Register a guard</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("CreateDormitory", "Admin")'">Add a dormitory</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("CreateRoom", "Admin")'">Add a room</button>
+            <br />
+        </div>
+    </div>
+</body>

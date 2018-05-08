@@ -17,10 +17,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Dormitory.Name, "Dormitory:", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("DormitoriesLabel", "Room is in:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Dormitory.Name, (IEnumerable<SelectListItem>)ViewBag.Dormitory,  new { @class = "form-control" } )
-                @Html.ValidationMessageFor(model => model.Dormitory.Name, "Dormitory is manditory field", new { @class = "text-danger" })
+                @Html.DropDownList("DormitoryId", null,  new { @class = "form-control" } )
+                @Html.ValidationMessage("DormitoryId", "Dormitory is manditory field", new { @class = "text-danger" })
             </div>
         </div>
 

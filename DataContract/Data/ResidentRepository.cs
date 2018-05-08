@@ -42,6 +42,33 @@ namespace DataContract.Data
             }
         }
 
+        public HttpResponseMessage Login(string user, string pass)
+        {
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Post, String.Format("api/Residents?login={0}&password={1}", user, pass));
+                    HttpResponseMessage response = httpClient.SendAsync(httpRequest).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response;
+                    }
+                    else
+                    {
+                        return response;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public HttpResponseMessage Delete(object id)
         {
             try
@@ -99,6 +126,29 @@ namespace DataContract.Data
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     HttpResponseMessage response = httpClient.GetAsync("api/Residents/" + id.ToString()).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    resident = JsonConvert.DeserializeObject<Resident>(jsonContents);
+                }
+                return resident;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Resident ReadByUsername(string user)
+        {
+            try
+            {
+                Resident resident = new Resident();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.GetAsync("api/Residents?user=" + user).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;
                     resident = JsonConvert.DeserializeObject<Resident>(jsonContents);

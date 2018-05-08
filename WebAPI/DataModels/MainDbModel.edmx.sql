@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/18/2018 11:46:00
--- Generated from EDMX file: C:\Users\edvala\source\repos\KTUnited\WebAPI\DataModels\MainDbModel.edmx
+-- Date Created: 05/07/2018 00:36:25
+-- Generated from EDMX file: C:\Users\edvala\OneDrive\KTUnited\WebAPI\DataModels\MainDbModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -81,6 +81,8 @@ CREATE TABLE [dbo].[ResidentSet] (
     [Surname] nvarchar(max)  NOT NULL,
     [PersonalCode] bigint  NOT NULL,
     [RoomID] int  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [Password] nvarchar(max)  NOT NULL,
     [Dormitory_ID] int  NOT NULL
 );
 GO
@@ -119,6 +121,8 @@ CREATE TABLE [dbo].[GuardSet] (
     [PersonalCode] bigint  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Surname] nvarchar(max)  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [Password] nvarchar(max)  NOT NULL,
     [Dormitory_ID] int  NOT NULL
 );
 GO
@@ -128,6 +132,8 @@ CREATE TABLE [dbo].[AdministratorSet] (
     [PersonalCode] bigint  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Surname] nvarchar(max)  NOT NULL,
+    [Username] nvarchar(max)  NOT NULL,
+    [Password] nvarchar(max)  NOT NULL,
     [Dormitory_ID] int  NOT NULL
 );
 GO
