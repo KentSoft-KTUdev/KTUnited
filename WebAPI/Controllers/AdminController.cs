@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataContract.Objects;
 using System.Net.Http;
+using DataContract;
 
 namespace WebAPI.Controllers
 {
@@ -83,6 +84,7 @@ namespace WebAPI.Controllers
                 ViewBag.RoomId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.RoomId);
                 ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", resident.DormitoryId);
                 ViewBag.DefaultPassword = resident.Password;
+                resident.Password = Configuration.Encryption(resident.Password);
                 if (residentRepository.Create((resident)).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
@@ -121,6 +123,7 @@ namespace WebAPI.Controllers
             {
                 ViewBag.DormitoryId = new SelectList(dormitoryRepository.GetAll(), "ID", "Name", guard.DormitoryId);
                 ViewBag.DefaultPassword = guard.Password;
+                guard.Password =DataContract.Configuration.Encryption(guard.Password);
                 if (guardRepository.Create(guard).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
@@ -210,7 +213,7 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login([Bind(Include = "Username,Password")]Administrator administrator)
         {
-            if (administratorRepository.Login(administrator.Username, administrator.Password).IsSuccessStatusCode)
+            if (administratorRepository.Login(administrator.Username, DataContract.Configuration.Encryption(administrator.Password)).IsSuccessStatusCode)
             {
                 administrator = administratorRepository.ReadByUsername(administrator.Username);
                 Session["Username"] = administrator.Username;

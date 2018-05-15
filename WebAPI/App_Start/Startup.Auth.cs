@@ -61,8 +61,8 @@ namespace WebAPI
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
-            //    ClientId = "",
-            //    ClientSecret = ""
+            //    ClientId = "909864031659-jt631b842aa00ap2s3d2pr08o40ecfh8.apps.googleusercontent.com",
+            //    ClientSecret = "JdRXRm4SJcnDckVV2wwS80RF"
             //});
         }
     }
