@@ -4,7 +4,21 @@
     ViewBag.Title = "RegisterRoom";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
+<style>
+    article, aside, figure, footer, header, hgroup,
+    menu, nav, section {
+        display: block;
+    }
 
+
+    #labels {
+        margin-bottom: 20px;
+    }
+
+    #buttons {
+        margin-left: 20px;
+    }
+</style>
 <h2>Register a Room</h2>
 
 <div>
@@ -18,7 +32,7 @@
 
         <div class="form-group">
             @Html.Label("DormitoriesLabel", "Room is in:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" id="labels">
                 @Html.DropDownList("DormitoryId", null,  new { @class = "form-control" } )
                 @Html.ValidationMessage("DormitoryId", "Dormitory is manditory field", new { @class = "text-danger" })
             </div>
@@ -28,7 +42,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Number, "Number:", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10" id="labels">
                 @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Number, "Number is manditory field", new { @class = "text-danger" })
             </div>
@@ -37,6 +51,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
+                <button type="button" id="buttons" class="btn btn-default" onclick="location.href='@Url.Action("ControlPanel", "Admin")'">Go back</button>
             </div>
         </div>
     }

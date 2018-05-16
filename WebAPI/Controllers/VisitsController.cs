@@ -31,6 +31,11 @@ namespace WebAPI.Controllers
             return db.VisitSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
+        public List<VisitContract> GetUserVisits(long resident)
+        {
+            return db.VisitSet.ToList().Where(x => x.ResidentPersonalCode == resident).Select(x => x.ToContract()).ToList();
+        }
+
         // GET: api/Visits/5
         /// <summary>
         /// Returns JSON seriliazed Visit object determined by identification key
@@ -48,6 +53,7 @@ namespace WebAPI.Controllers
 
             return Ok(visit);
         }
+
 
         // PUT: api/Visits/5
         /// <summary>

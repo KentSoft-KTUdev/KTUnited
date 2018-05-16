@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WebAPI.DataModels;
 using WebAPI.Extensions;
+using DataContract;
 using AdministratorContract = DataContract.Objects.Administrator;
 
 namespace WebAPI.Controllers
@@ -120,7 +121,8 @@ namespace WebAPI.Controllers
             }
             try
             {
-                var obj = db.AdministratorSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                string pass = WebApiConfig.Decryption(password.Replace(' ', '+'));
+                var obj = db.AdministratorSet.AsEnumerable().Where(a => a.Username.Equals(login) && WebApiConfig.Decryption(a.Password).Equals(pass)).FirstOrDefault();
                 if(obj != null)
                 {
                     return Ok();

@@ -132,5 +132,30 @@ namespace WebAPI.Controllers
         {
             return db.GuardSet.Count(e => e.PersonalCode == id) > 0;
         }
+
+
+        public IHttpActionResult Login(string login, string password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var obj = db.GuardSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                if (obj != null)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Bad login credentials");
+                }
+            }
+            catch (System.ArgumentNullException)
+            {
+                return BadRequest("User wasn't found by credentials entered");
+            }
+        }
     }
 }
