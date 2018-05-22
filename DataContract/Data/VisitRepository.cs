@@ -111,6 +111,29 @@ namespace DataContract.Data
             }
         }
 
+        public List<Visit> GetDormitoryVisits(int dormitoryID)
+        {
+            try
+            {
+                List<Visit> listOfVisits = new List<Visit>();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = httpClient.GetAsync("api/Visits?dormitoryID=" + dormitoryID.ToString()).Result;
+                    response.EnsureSuccessStatusCode();
+                    string jsonContents = response.Content.ReadAsStringAsync().Result;
+                    listOfVisits = JsonConvert.DeserializeObject<List<Visit>>(jsonContents);
+                }
+                return listOfVisits;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<Visit> GetResidentVisits(long residentPersonalCode)
         {
             try

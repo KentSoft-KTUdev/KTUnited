@@ -14,7 +14,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Visit Date:</th>
                     <th>Ongoin:</th>
                     <th>Visitor:</th>
@@ -24,32 +23,15 @@
             </thead>
             <tbody>
                 @{
-                    int i = 1;
                     foreach (DataContract.Objects.Visit visit in visits)
                     {
-                        if (visit.IsOver)
-                        {
-                            <tr class="table-secondary">
-                                <td>@i</td>
-                                <td>@visit.VisitRegDateTime</td>
-                                <td>@visit.IsOver</td>
-                                <td>@guests.Find(x => x.PersonalCode == visit.GuestId).Name</td>
-                                <td>STUB</td>
-                                <td>@guards.Find(x => x.PersonalCode == visit.GuardId).Name</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr class="table-success">
-                                <td>@i</td>
-                                <td>@visit.VisitRegDateTime</td>
-                                <td>@visit.IsOver</td>
-                                <td>@guests.Find(x => x.PersonalCode == visit.GuestId).Name</td>
-                                <td>STUB</td>
-                                <td>@guards.Find(x => x.PersonalCode == visit.GuardId).Name</td>
-                            </tr>
-                        }
-                        i++;
+                        <tr class="table-secondary">
+                            <td>@visit.VisitRegDateTime</td>
+                            <td>@visit.IsOver</td>
+                            <td>@guests.Find(x => x.PersonalCode == visit.GuestId).Name @guests.Find(x => x.PersonalCode == visit.GuestId).Surname</td>
+                            <td>@visit.IsConfirmed</td>
+                            <td>@guards.Find(x => x.PersonalCode == visit.GuardId).Name @guards.Find(x => x.PersonalCode == visit.GuardId).Surname</td>
+                        </tr>
                     }
                 }
             </tbody>
