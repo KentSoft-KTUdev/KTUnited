@@ -14,7 +14,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Visit Date:</th>
                     <th>Ongoin:</th>
                     <th>Visitor:</th>
@@ -24,13 +23,11 @@
             </thead>
             <tbody>
                 @{
-                    int i = 1;
                     foreach (DataContract.Objects.Visit visit in visits)
                     {
                         if (visit.IsOver == false)
                         {
                             <tr class="table-secondary">
-                                <td>@i</td>
                                 <td>@visit.VisitRegDateTime</td>
                                 <td>@visit.IsOver</td>
                                 <td>@guestRepository.Read(visit.GuestId).Name @guestRepository.Read(visit.GuestId).Surname </td>
@@ -46,7 +43,6 @@
                                 }                          
                             </tr>
                         }
-                        i++;
                     }
                 }
             </tbody>

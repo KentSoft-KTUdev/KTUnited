@@ -41,6 +41,11 @@ namespace WebAPI.Controllers
             return db.VisitSet.ToList().Where(x => x.ResidentPersonalCode == resident).Select(x => x.ToContract()).ToList();
         }
 
+        public List<VisitContract> GetDormitoryVisits(int dormitory)
+        {
+            return db.VisitSet.ToList().Where(x => x.DormitoryID == dormitory).Select(x => x.ToContract()).ToList();
+        }
+
         // GET: api/Visits/5
         /// <summary>
         /// Returns JSON seriliazed Visit object determined by identification key

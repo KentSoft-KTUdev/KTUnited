@@ -290,6 +290,10 @@ namespace WebAPI.Extensions
                 DormitoryID = visitDormitory.ID,
                 Guest_PersonalCode = visitGuest.PersonalCode,
                 IsConfirmed = entity.IsConfirmed,
+                Resident = visitResident,
+                Guard = visitGuard,
+                Dormitory = visitDormitory,
+                Guest = visitGuest
             };
             return visit;
         }

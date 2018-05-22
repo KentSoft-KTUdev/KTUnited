@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
             if (IsLoggedOn())
             {
                 #region ViewBag
-                List<Visit> visits = visitRepository.GetAll();
+                List<Visit> visits = visitRepository.GetDormitoryVisits(guardRepository.Read(Session["GuardID"]).DormitoryId);
                 List<Guard> guards = guardRepository.GetAll();
                 ViewBag.Visits = visits;
                 ViewBag.Guards = guards;
@@ -86,6 +86,7 @@ namespace WebAPI.Controllers
             visit.VisitRegDateTime = DateTime.Now;
             visit.GuardId = (Int64)Session["GuardID"];
             visit.IsConfirmed = true;
+            visit.IsOver = false;
             visitRepository.Update(visitID, visit);
             return RedirectToAction("Visits");
         }
