@@ -19,12 +19,21 @@ namespace WebAPI.Controllers
         private MainDbModelContainer1 db = new MainDbModelContainer1();
 
         // GET: api/Guards
+        /// <summary>
+        /// Gets list of Guards from database
+        /// </summary>
+        /// <returns>List of Guard objects</returns>
         public List<GuardContract> GetGuardSet()
         {
             return db.GuardSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Guards/5
+        /// <summary>
+        /// Gets guard by its identity key
+        /// </summary>
+        /// <param name="id">Identity key</param>
+        /// <returns>Guard object</returns>
         [ResponseType(typeof(GuardContract))]
         public IHttpActionResult GetGuard(long id)
         {
@@ -37,7 +46,11 @@ namespace WebAPI.Controllers
             return Ok(guard);
         }
 
-
+        /// <summary>
+        /// Gets guard by its system login data
+        /// </summary>
+        /// <param name="user">System login username</param>
+        /// <returns>Guard object</returns>
         [ResponseType(typeof(GuardContract))]
         public IHttpActionResult GetGuard(string user)
         {
@@ -51,6 +64,12 @@ namespace WebAPI.Controllers
         }
 
         // PUT: api/Guards/5
+        /// <summary>
+        /// Updates existing Guard
+        /// </summary>
+        /// <param name="id">Identity key of guard to be updated</param>
+        /// <param name="guard">Updated guard data</param>
+        /// <returns>Request status</returns>
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGuard(long id, GuardContract guard)
         {
@@ -85,6 +104,11 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/Guards
+        /// <summary>
+        /// Inserts new Guard into database
+        /// </summary>
+        /// <param name="guard">Guard object to be inserted</param>
+        /// <returns>Object that was inserted or request status</returns>
         [ResponseType(typeof(GuardContract))]
         public IHttpActionResult PostGuard(GuardContract guard)
         {
@@ -116,6 +140,11 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Guards/5
+        /// <summary>
+        /// Deletes existing guard from database
+        /// </summary>
+        /// <param name="id">Guard to be deleted identity key</param>
+        /// <returns>Request status or Guard object</returns>
         [ResponseType(typeof(GuardContract))]
         public IHttpActionResult DeleteGuard(long id)
         {
@@ -146,7 +175,12 @@ namespace WebAPI.Controllers
             return db.GuardSet.Count(e => e.PersonalCode == id) > 0;
         }
 
-
+        /// <summary>
+        /// Web api controlled login into system
+        /// </summary>
+        /// <param name="login">Username</param>
+        /// <param name="password">Raw password</param>
+        /// <returns>Request status</returns>
         public IHttpActionResult Login(string login, string password)
         {
             if (!ModelState.IsValid)

@@ -17,12 +17,21 @@ namespace WebAPI.Controllers
         private MainDbModelContainer1 db = new MainDbModelContainer1();
 
         // GET: api/Administrators
+        /// <summary>
+        /// Gets administrator lists
+        /// </summary>
+        /// <returns>List of Administrators</returns>
         public List<AdministratorContract> GetAdministratorSet()
         {
             return db.AdministratorSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
         // GET: api/Administrators/5
+        /// <summary>
+        /// Gets administrator by its identity key
+        /// </summary>
+        /// <param name="id">Personal code</param>
+        /// <returns>Administrator object</returns>
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult GetAdministrator(long id)
         {
@@ -35,6 +44,11 @@ namespace WebAPI.Controllers
             return Ok(administrator);
         }
 
+        /// <summary>
+        /// Gets administrator by its identity username
+        /// </summary>
+        /// <param name="user">System login</param>
+        /// <returns>Administrator object</returns>
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult GetAdministrator(string user)
         {
@@ -48,6 +62,12 @@ namespace WebAPI.Controllers
         }
 
         // PUT: api/Administrators/5
+        /// <summary>
+        /// Updates existing administraotr
+        /// </summary>
+        /// <param name="id">Administrator identity key</param>
+        /// <param name="administrator">Updated administrator object</param>
+        /// <returns>Request status</returns>
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAdministrator(long id, AdministratorContract administrator)
         {
@@ -83,6 +103,11 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/Administrators
+        /// <summary>
+        /// Creates new administrator
+        /// </summary>
+        /// <param name="administrator">New administrator object</param>
+        /// <returns>Administrator object that was inserted</returns>
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult PostAdministrator(AdministratorContract administrator)
         {
@@ -113,6 +138,12 @@ namespace WebAPI.Controllers
             return CreatedAtRoute("DefaultApi", new { id = administrator.PersonalCode }, administrator);
         }
 
+        /// <summary>
+        /// Api controlled login
+        /// </summary>
+        /// <param name="login">Username</param>
+        /// <param name="password">Password</param>
+        /// <returns></returns>
         public IHttpActionResult Login(string login, string password)
         {
             if (!ModelState.IsValid)
@@ -139,6 +170,11 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Administrators/5
+        /// <summary>
+        /// Deletes administrator object from database
+        /// </summary>
+        /// <param name="id">Administrator identity key</param>
+        /// <returns>Administrator object</returns>
         [ResponseType(typeof(AdministratorContract))]
         public IHttpActionResult DeleteAdministrator(long id)
         {
