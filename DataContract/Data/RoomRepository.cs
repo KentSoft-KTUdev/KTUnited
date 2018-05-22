@@ -8,7 +8,7 @@ using DataContract.Interfaces;
 using DataContract.Objects;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Web.Script.Serialization;
+//using System.Web.Script.Serialization;
 
 namespace DataContract.Data
 {
@@ -24,7 +24,7 @@ namespace DataContract.Data
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = httpClient.PostAsync("api/Rooms", content).Result;
                     if (response.IsSuccessStatusCode)
                     {
@@ -121,7 +121,7 @@ namespace DataContract.Data
                     httpClient.BaseAddress = new Uri(Configuration.WebApiAdress);
                     httpClient.DefaultRequestHeaders.Accept.Clear();
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    StringContent content = new StringContent(new JavaScriptSerializer().Serialize(entity), Encoding.UTF8, "application/json");
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = httpClient.PutAsync("api/Rooms/" + id.ToString(), content).Result;
                     response.EnsureSuccessStatusCode();
                     string jsonContents = response.Content.ReadAsStringAsync().Result;

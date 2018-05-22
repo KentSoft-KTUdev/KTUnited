@@ -13,6 +13,7 @@ namespace DataContract
          * webapi-kentsoft.azurewebsites.net
          * localhost:64476
          */
+
         public static string WebApiAdress = "http://localhost:64476/";
 
         public static string Encryption(string strText)
