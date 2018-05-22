@@ -147,7 +147,8 @@ namespace WebAPI.Controllers
             }
             try
             {
-                var obj = db.ResidentSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                string pass = WebApiConfig.Decryption(password.Replace(' ', '+'));
+                var obj = db.ResidentSet.AsEnumerable().Where(a => a.Username.Equals(login) && WebApiConfig.Decryption(a.Password).Equals(pass)).FirstOrDefault();
                 if (obj != null)
                 {
                     return Ok();

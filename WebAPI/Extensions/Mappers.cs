@@ -257,7 +257,8 @@ namespace WebAPI.Extensions
                 ResidentId = entity.Resident.PersonalCode,
                 GuardId = entity.Guard.PersonalCode,
                 DormitoryId = entity.Dormitory.ID,
-                GuestId = entity.Guest.PersonalCode
+                GuestId = entity.Guest.PersonalCode,
+                IsConfirmed = entity.IsConfirmed
             };
             return visit;
         }
@@ -277,17 +278,18 @@ namespace WebAPI.Extensions
                 visitDormitory = db.DormitorySet.Find(entity.DormitoryId);
                 visitGuest = db.GuestSet.Find(entity.GuestId);
             }
-
+            
             var visit = new VisitInternal
             {
                 ID = entity.ID,
                 VisitRegDateTime = entity.VisitRegDateTime,
                 IsOver = entity.IsOver,
                 VisitEndDateTime = entity.VisitEndDateTime,
-                Resident = visitResident,
-                Guard = visitGuard,
-                Dormitory = visitDormitory,
-                Guest = visitGuest
+                ResidentPersonalCode = visitResident.PersonalCode,
+                GuardPersonalCode = visitGuard.PersonalCode,
+                DormitoryID = visitDormitory.ID,
+                Guest_PersonalCode = visitGuest.PersonalCode,
+                IsConfirmed = entity.IsConfirmed,
             };
             return visit;
         }
