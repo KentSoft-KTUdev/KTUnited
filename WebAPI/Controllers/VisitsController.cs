@@ -31,6 +31,11 @@ namespace WebAPI.Controllers
             return db.VisitSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
+        public List<VisitContract> GetVisitsByStatus(bool status)
+        {
+            return db.VisitSet.Where(x => x.IsConfirmed == status).ToList().Select(x => x.ToContract()).ToList();
+        }
+
         public List<VisitContract> GetUserVisits(long resident)
         {
             return db.VisitSet.ToList().Where(x => x.ResidentPersonalCode == resident).Select(x => x.ToContract()).ToList();
@@ -74,7 +79,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-
+            
             db.Entry(visit.ToInternal()).State = EntityState.Modified;
 
             try

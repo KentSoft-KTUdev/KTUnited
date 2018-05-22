@@ -37,6 +37,19 @@ namespace WebAPI.Controllers
             return Ok(guard);
         }
 
+
+        [ResponseType(typeof(GuardContract))]
+        public IHttpActionResult GetGuard(string user)
+        {
+            GuardContract guard = db.GuardSet.FirstOrDefault(x => x.Username == user).ToContract();
+            if (guard == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(guard);
+        }
+
         // PUT: api/Guards/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGuard(long id, GuardContract guard)
@@ -142,7 +155,8 @@ namespace WebAPI.Controllers
             }
             try
             {
-                var obj = db.GuardSet.Where(a => a.Username.Equals(login) && a.Password.Equals(password)).FirstOrDefault();
+                string pass = WebApiConfig.Decryption(password.Replace(' ', '+'));
+                var obj = db.GuardSet.AsEnumerable().Where(a => a.Username.Equals(login) && WebApiConfig.Decryption(a.Password).Equals(pass)).FirstOrDefault();
                 if (obj != null)
                 {
                     return Ok();

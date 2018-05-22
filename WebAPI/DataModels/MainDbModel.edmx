@@ -89,6 +89,7 @@
     <Property Name="ResidentPersonalCode" Type="bigint" Nullable="false" />
     <Property Name="GuardPersonalCode" Type="bigint" Nullable="false" />
     <Property Name="DormitoryID" Type="int" Nullable="false" />
+    <Property Name="IsConfirmed" Type="bit" Nullable="true" />
     <Property Name="Guest_PersonalCode" Type="bigint" Nullable="true" />
   </EntityType>
   <EntityType Name="GuardSet">
@@ -335,6 +336,7 @@
           <NavigationProperty Name="Dormitory" Relationship="MainDbModel.DormitoryVisit" FromRole="Visit" ToRole="Dormitory" />
           <Property Name="DormitoryID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Guest" Relationship="MainDbModel.VisitGuest" FromRole="Visit" ToRole="Guest" />
+          <Property Name="IsConfirmed" Type="Boolean" Nullable="true" />
         </EntityType>
         <Association Name="ResidentVisit">
           <End Type="MainDbModel.Resident" Role="Resident" Multiplicity="1" />
@@ -490,6 +492,7 @@
           <ScalarProperty Name="ResidentPersonalCode" ColumnName="ResidentPersonalCode" />
           <ScalarProperty Name="GuardPersonalCode" ColumnName="GuardPersonalCode" />
           <ScalarProperty Name="DormitoryID" ColumnName="DormitoryID" />
+          <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

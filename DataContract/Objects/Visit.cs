@@ -16,6 +16,7 @@ namespace DataContract.Objects
         public Int64 GuardId { get; set; }
         public int DormitoryId { get; set; }
         public Int64 GuestId { get; set; }
+        public bool? IsConfirmed { get; set; }
     }
     public class VisitEqualityComparerByGuest : IEqualityComparer<Visit>
     {

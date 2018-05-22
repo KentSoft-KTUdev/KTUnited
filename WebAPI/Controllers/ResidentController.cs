@@ -92,9 +92,9 @@ namespace WebAPI.Controllers
                 visit.VisitRegDateTime = DateTime.MaxValue;
                 //same shit
                 visit.VisitEndDateTime = DateTime.MaxValue;
-                //cia reikes tureti viena default guarda, kuri priskirsim ir kai tikrasis tvirtina - pasikeicia i normalu
-                visit.GuardId = guardRepository.Read(111).PersonalCode;
-                
+                //Dummy guard priskirymas
+                visit.GuardId = -1;
+                visit.IsConfirmed = false;
                 List<SelectListItem> Guests = new List<SelectListItem>();
                 foreach (Guest guest in guestRepository.GetAll())
                 {
@@ -102,8 +102,15 @@ namespace WebAPI.Controllers
 
                 }
                 ViewBag.GuestId = Guests;
-                if(visitRepository.Create(visit).ReasonPhrase == "Created");
-                return RedirectToAction("Successful");
+                if(visitRepository.Create(visit).ReasonPhrase == "Created")
+                {
+                    return RedirectToAction("Successful");
+                }
+                else
+                {
+                    return RedirectToAction("NotSuccessful");
+                }
+                
             }
 
             return RedirectToAction("Index");
@@ -147,7 +154,7 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login([Bind(Include = "Username,Password")]Resident resident)
         {
-            if (residentRepository.Login(resident.Username, resident.Password).IsSuccessStatusCode)
+            if (residentRepository.Login(resident.Username, DataContract.Configuration.Encryption(resident.Password)).IsSuccessStatusCode)
             {
                 resident = residentRepository.ReadByUsername(resident.Username);
                 Session["Username"] = resident.Username;

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/07/2018 00:36:25
+-- Date Created: 05/22/2018 02:07:48
 -- Generated from EDMX file: C:\Users\edvala\OneDrive\KTUnited\WebAPI\DataModels\MainDbModel.edmx
 -- --------------------------------------------------
 
@@ -112,6 +112,7 @@ CREATE TABLE [dbo].[VisitSet] (
     [ResidentPersonalCode] bigint  NOT NULL,
     [GuardPersonalCode] bigint  NOT NULL,
     [DormitoryID] int  NOT NULL,
+    [IsConfirmed] bit  NULL,
     [Guest_PersonalCode] bigint  NULL
 );
 GO
