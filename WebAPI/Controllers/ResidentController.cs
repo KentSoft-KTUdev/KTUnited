@@ -20,11 +20,20 @@ namespace WebAPI.Controllers
         // GET: Resident
         public ActionResult Index()
         {
-            if(IsLoggedOn())
+            if (IsLoggedOn())
             {
                 return RedirectToAction("ControlPanel");
             }
             return View();
+        }
+
+        public ActionResult Successful()
+        {
+            if (IsLoggedOn())
+            {
+                return View();
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult RegisterGuest()
@@ -40,64 +49,70 @@ namespace WebAPI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RegisterGuest([Bind(Include = "Name,Surname,PersonalCode")] Guest guest)
         {
-            guestRepository.Create((guest));
-            return View();
+            if (IsLoggedOn())
+            {
+                //System.Net.Http.HttpResponseMessage message = new System.Net.Http.HttpResponseMessage();
+                //message.ReasonPhrase = "Created";
+                if (guestRepository.Create((guest)).ReasonPhrase == "Created")
+                return RedirectToAction("Successful");
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult MyVisits()
         {
-            #region ViewBag
-            VisitRepository visitRepository = new VisitRepository();
-            List<Visit> visit = visitRepository.GetAll();
-            List<SelectListItem> Visits = new List<SelectListItem>();
-            if (visit.Count == 0)
+            if (IsLoggedOn())
             {
-                Visits.Add(new SelectListItem { Text = "No upcoming visits", Value = "1" });
-            }
-            else
-            {
-                for (int i = 0; i < visit.Count; i++)
-                {
-                    Visits.Add(new SelectListItem { Text = visit[i].VisitRegDateTime.ToString(), Value = (i + 1).ToString() });
+                #region ViewBag
+                List<Visit> visits = visitRepository.GetResidentVisits((long)Session["ResidentID"]);
+                List<Guest> guests = guestRepository.GetResidentGuests((long)Session["ResidentID"]);
+                List<Guard> guards = guardRepository.GetAll();
+                ViewBag.Visits = visits;
+                ViewBag.Guests = guests;
+                ViewBag.Guards = guards;
+                #endregion
 
-                }
+                return View();
             }
-            ViewBag.Visits = Visits;
-            #endregion
-
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterVisitedGuest([Bind(Include = "GuestId")] Visit visit)
         {
-            Resident temp = residentRepository.Read(Session["ResidentID"]);
-
-            visit.IsOver = false;
-            visit.ResidentId = temp.PersonalCode;
-            visit.DormitoryId = temp.DormitoryId;
-            //tikroji sukurimo data bus priskirta tada kai iseis zmogus t.y. kai patvirtins guard
-            visit.VisitRegDateTime = DateTime.MaxValue;
-            //same shit
-            visit.VisitEndDateTime = DateTime.MaxValue;
-            //cia reikes tureti viena default guarda, kuri priskirsim ir kai tikrasis tvirtina - pasikeicia i normalu
-            visit.GuardId = guardRepository.Read(111).PersonalCode;
-            visitRepository.Create(visit);
-            List<SelectListItem> Guests = new List<SelectListItem>();
-            foreach (Guest guest in guestRepository.GetAll())
+            if (IsLoggedOn())
             {
-                Guests.Add(new SelectListItem { Text = guest.Name + " " + guest.Surname, Value = guest.PersonalCode.ToString() });
+                Resident temp = residentRepository.Read(Session["ResidentID"]);
 
+                visit.IsOver = false;
+                visit.ResidentId = temp.PersonalCode;
+                visit.DormitoryId = temp.DormitoryId;
+                //tikroji sukurimo data bus priskirta tada kai iseis zmogus t.y. kai patvirtins guard
+                visit.VisitRegDateTime = DateTime.MaxValue;
+                //same shit
+                visit.VisitEndDateTime = DateTime.MaxValue;
+                //cia reikes tureti viena default guarda, kuri priskirsim ir kai tikrasis tvirtina - pasikeicia i normalu
+                visit.GuardId = guardRepository.Read(111).PersonalCode;
+                
+                List<SelectListItem> Guests = new List<SelectListItem>();
+                foreach (Guest guest in guestRepository.GetAll())
+                {
+                    Guests.Add(new SelectListItem { Text = guest.Name + " " + guest.Surname, Value = guest.PersonalCode.ToString() });
+
+                }
+                ViewBag.GuestId = Guests;
+                if(visitRepository.Create(visit).ReasonPhrase == "Created");
+                return RedirectToAction("Successful");
             }
-            ViewBag.GuestId = Guests;
-            return View(visit);
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult RegisterVisitedGuest()
         {
             #region ViewBag
-            if(IsLoggedOn())
+            if (IsLoggedOn())
             {
                 List<Guest> guest = guestRepository.GetAll();
                 List<SelectListItem> Guests = new List<SelectListItem>();
@@ -117,12 +132,6 @@ namespace WebAPI.Controllers
                 return View();
             }
             return RedirectToAction("Index");
-        }
-
-        // sukurkit kazka kas butu kaip to gyventojo vizitu sarasas
-        public ActionResult Visits()
-        {
-            return View();
         }
 
         public ActionResult Login()
@@ -152,10 +161,12 @@ namespace WebAPI.Controllers
         {
             if (IsLoggedOn())
             {
+                ViewBag.Name = Session["Username"];
                 return View();
             }
             return RedirectToAction("Index");
         }
+        
 
         private bool IsLoggedOn()
         {

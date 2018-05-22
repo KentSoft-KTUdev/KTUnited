@@ -1,8 +1,8 @@
-﻿@model DataContract.Objects.Visit
+﻿
 @{
-    ViewBag.Title = "MyVisits";
-    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
+    ViewBag.Title = "Visits";
 }
+
 @{
     List<DataContract.Objects.Visit> visits = ViewBag.Visits;
     List<DataContract.Objects.Guest> guests = ViewBag.Guests;
@@ -56,6 +56,3 @@
         </table>
     </div>
 </div>
-
-
-<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Resident")'">Go back</button>

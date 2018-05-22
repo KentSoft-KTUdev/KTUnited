@@ -3,6 +3,18 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
+<style>
+    article, aside, figure, footer, header, hgroup,
+    menu, nav, section, image {
+        display: block;
+    }
+
+
+    #labels {
+        margin-bottom: 20px;
+        margin-left: 40px;
+    }
+</style>
 <body>
     @using (Html.BeginForm("Login", "Admin", FormMethod.Post, new { id = "submitForm" }))
     {
@@ -13,7 +25,7 @@
             @Html.ValidationSummary(true, "Test", new { @class = "text-danger" })
         </div>
         <div class="form-horizontal" align="justify">
-                <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                <img id="labels" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                 <div class="form-group">
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username", @autofocus = "autofocus" } })

@@ -17,4 +17,16 @@ namespace DataContract.Objects
         public int DormitoryId { get; set; }
         public Int64 GuestId { get; set; }
     }
+    public class VisitEqualityComparerByGuest : IEqualityComparer<Visit>
+    {
+        public bool Equals(Visit a, Visit b)
+        {
+            return a.GuestId == b.GuestId;
+        }
+
+        public int GetHashCode(Visit obj)
+        {
+            return obj.GuestId.GetHashCode();
+        }
+    }
 }
