@@ -49,6 +49,11 @@ namespace WebAPI.Controllers
             return Ok(resident);
         }
 
+        /// <summary>
+        /// Gets resident by determined by its system login data
+        /// </summary>
+        /// <param name="user">Username</param>
+        /// <returns>Resident object</returns>
         [ResponseType(typeof(ResidentContract))]
         public IHttpActionResult GetResident(string user)
         {
@@ -139,6 +144,12 @@ namespace WebAPI.Controllers
             return CreatedAtRoute("DefaultApi", new { id = resident.PersonalCode }, resident);
         }
 
+        /// <summary>
+        /// Web api controlled login into system
+        /// </summary>
+        /// <param name="login">System username</param>
+        /// <param name="password">Raw password</param>
+        /// <returns></returns>
         public IHttpActionResult Login(string login, string password)
         {
             if (!ModelState.IsValid)

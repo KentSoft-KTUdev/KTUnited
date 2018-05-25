@@ -486,6 +486,56 @@
             API authentication control
             </summary>
         </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.GetAdministratorSet">
+            <summary>
+            Gets administrator lists
+            </summary>
+            <returns>List of Administrators</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.GetAdministrator(System.Int64)">
+            <summary>
+            Gets administrator by its identity key
+            </summary>
+            <param name="id">Personal code</param>
+            <returns>Administrator object</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.GetAdministrator(System.String)">
+            <summary>
+            Gets administrator by its identity username
+            </summary>
+            <param name="user">System login</param>
+            <returns>Administrator object</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.PutAdministrator(System.Int64,DataContract.Objects.Administrator)">
+            <summary>
+            Updates existing administraotr
+            </summary>
+            <param name="id">Administrator identity key</param>
+            <param name="administrator">Updated administrator object</param>
+            <returns>Request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.PostAdministrator(DataContract.Objects.Administrator)">
+            <summary>
+            Creates new administrator
+            </summary>
+            <param name="administrator">New administrator object</param>
+            <returns>Administrator object that was inserted</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.Login(System.String,System.String)">
+            <summary>
+            Api controlled login
+            </summary>
+            <param name="login">Username</param>
+            <param name="password">Password</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.AdministratorsController.DeleteAdministrator(System.Int64)">
+            <summary>
+            Deletes administrator object from database
+            </summary>
+            <param name="id">Administrator identity key</param>
+            <returns>Administrator object</returns>
+        </member>
         <member name="T:WebAPI.Controllers.DormitoriesController">
             <summary>
             All possible interactions within Dormitories API
@@ -525,6 +575,56 @@
             </summary>
             <param name="id">Identification key of Dormitory to be deleted</param>
             <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.GetGuardSet">
+            <summary>
+            Gets list of Guards from database
+            </summary>
+            <returns>List of Guard objects</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.GetGuard(System.Int64)">
+            <summary>
+            Gets guard by its identity key
+            </summary>
+            <param name="id">Identity key</param>
+            <returns>Guard object</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.GetGuard(System.String)">
+            <summary>
+            Gets guard by its system login data
+            </summary>
+            <param name="user">System login username</param>
+            <returns>Guard object</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.PutGuard(System.Int64,DataContract.Objects.Guard)">
+            <summary>
+            Updates existing Guard
+            </summary>
+            <param name="id">Identity key of guard to be updated</param>
+            <param name="guard">Updated guard data</param>
+            <returns>Request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.PostGuard(DataContract.Objects.Guard)">
+            <summary>
+            Inserts new Guard into database
+            </summary>
+            <param name="guard">Guard object to be inserted</param>
+            <returns>Object that was inserted or request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.DeleteGuard(System.Int64)">
+            <summary>
+            Deletes existing guard from database
+            </summary>
+            <param name="id">Guard to be deleted identity key</param>
+            <returns>Request status or Guard object</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.GuardsController.Login(System.String,System.String)">
+            <summary>
+            Web api controlled login into system
+            </summary>
+            <param name="login">Username</param>
+            <param name="password">Raw password</param>
+            <returns>Request status</returns>
         </member>
         <member name="T:WebAPI.Controllers.GuestsController">
             <summary>
@@ -584,6 +684,13 @@
             <param name="id">Resident identifaction key</param>
             <returns>Http request result</returns>
         </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.GetResident(System.String)">
+            <summary>
+            Gets resident by determined by its system login data
+            </summary>
+            <param name="user">Username</param>
+            <returns>Resident object</returns>
+        </member>
         <member name="M:WebAPI.Controllers.ResidentsController.PutResident(System.Int64,DataContract.Objects.Resident)">
             <summary>
             Updates particular Resident object in SQL database
@@ -598,6 +705,14 @@
             </summary>
             <param name="resident">Resident to be inserted</param>
             <returns>Http request status</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.ResidentsController.Login(System.String,System.String)">
+            <summary>
+            Web api controlled login into system
+            </summary>
+            <param name="login">System username</param>
+            <param name="password">Raw password</param>
+            <returns></returns>
         </member>
         <member name="M:WebAPI.Controllers.ResidentsController.DeleteResident(System.Int64)">
             <summary>
@@ -656,6 +771,27 @@
             Returns JSON serialized array of Visit objects
             </summary>
             <returns>List of Visits</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.GetVisitsByStatus(System.Boolean)">
+            <summary>
+            Gets visits by status
+            </summary>
+            <param name="status">Is visited approved</param>
+            <returns>List of visit objects</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.GetUserVisits(System.Int64)">
+            <summary>
+            Gets particular Resident visits
+            </summary>
+            <param name="resident">Resident identity key</param>
+            <returns>List of visit objects</returns>
+        </member>
+        <member name="M:WebAPI.Controllers.VisitsController.GetDormitoryVisits(System.Int32)">
+            <summary>
+            Gets particular Dormitory visits
+            </summary>
+            <param name="dormitory">Dormitory id</param>
+            <returns>List of visit objects</returns>
         </member>
         <member name="M:WebAPI.Controllers.VisitsController.GetVisit(System.Int32)">
             <summary>

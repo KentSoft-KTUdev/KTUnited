@@ -31,16 +31,31 @@ namespace WebAPI.Controllers
             return db.VisitSet.ToList().Select(x => x.ToContract()).ToList();
         }
 
+        /// <summary>
+        /// Gets visits by status
+        /// </summary>
+        /// <param name="status">Is visited approved</param>
+        /// <returns>List of visit objects</returns>
         public List<VisitContract> GetVisitsByStatus(bool status)
         {
             return db.VisitSet.Where(x => x.IsConfirmed == status).ToList().Select(x => x.ToContract()).ToList();
         }
 
+        /// <summary>
+        /// Gets particular Resident visits
+        /// </summary>
+        /// <param name="resident">Resident identity key</param>
+        /// <returns>List of visit objects</returns>
         public List<VisitContract> GetUserVisits(long resident)
         {
             return db.VisitSet.ToList().Where(x => x.ResidentPersonalCode == resident).Select(x => x.ToContract()).ToList();
         }
 
+        /// <summary>
+        /// Gets particular Dormitory visits
+        /// </summary>
+        /// <param name="dormitory">Dormitory id</param>
+        /// <returns>List of visit objects</returns>
         public List<VisitContract> GetDormitoryVisits(int dormitory)
         {
             return db.VisitSet.ToList().Where(x => x.DormitoryID == dormitory).Select(x => x.ToContract()).ToList();

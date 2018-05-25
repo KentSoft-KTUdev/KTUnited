@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
         {
             object visitID = RouteData.Values["id"];
             Visit visit = visitRepository.Read(visitID);
-            visit.VisitRegDateTime = DateTime.Now;
+            visit.VisitEndDateTime = DateTime.Now;
             visit.GuardId = (Int64)Session["GuardID"];
             visit.IsOver = true;
             visitRepository.Update(visitID, visit);
