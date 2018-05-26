@@ -330,6 +330,7 @@
     <Content Include="Content\img\brandTextOnly.png" />
     <Content Include="Content\img\Dalius.jpg" />
     <Content Include="Content\img\Edvardas.jpg" />
+    <Content Include="Content\img\header.png" />
     <Content Include="Content\img\Mindaugas.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="DataModels\MainDbModel.Context.tt">
@@ -462,6 +463,7 @@
     <Content Include="Views\Guard\ControlPanel.cshtml" />
     <Content Include="Views\Guard\ConnectionNotSuccessful.cshtml" />
     <Content Include="Views\Guard\Visits.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
