@@ -3,45 +3,48 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
-<style>
-    article, aside, figure, footer, header, hgroup,
-    menu, nav, section, image {
-        display: block;
-    }
+<link href="~/Content/loginstyle.css" rel="Stylesheet" type="text/css" />
 
-
-    #labels {
-        margin-bottom: 20px;
-        margin-left: 40px;
-    }
-</style>
-<body>
     @using (Html.BeginForm("Login", "Guard", FormMethod.Post, new { id = "submitForm" }))
     {
+
         @Html.AntiForgeryToken()
         <div class="form-horizontal" align="center">
-            <h4>Login</h4>
+
             <hr />
             @Html.ValidationSummary(true, "Test", new { @class = "text-danger" })
         </div>
-        <div class="form-horizontal" align="justify">
-            <img id="labels" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username", @autofocus = "autofocus" } })
-                    @Html.ValidationMessageFor(model => model.Username, "Username is manditory field", new { @class = "text-danger" })
+
+
+        <div class="login-form">
+            <form action="/examples/actions/confirmation.php" method="post">
+                <h2 class="text-center">Sign in</h2>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username", @autofocus = "autofocus" } })
+                        @Html.ValidationMessageFor(model => model.Username, "Username is manditory field", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password", @type = "password" } })
-                    @Html.ValidationMessageFor(model => model.Password, "Password is manditory field", new { @class = "text-danger" })
-                    @Html.CheckBox("remember", false, new { htmlAttributes = new { @class = "checkbox" } })
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password", @type = "password" } })
+                        @Html.ValidationMessageFor(model => model.Password, "Password is manditory field", new { @class = "text-danger" })
+
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary login-btn btn-block">Sign in</button>
+                </div>
+                <div class="clearfix">
+                    @Html.CheckBox("remember", false, new { htmlAttributes = new { @class = "pull-left checkbox-inline" } })
                     @Html.Label("Remember me")
+                    @Html.ActionLink("Forgot password?", "ForgotPassword", null, new { @class = "pull-right" })
+
                 </div>
-            </div>
-            <input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" value="Login" />
-            @Html.ActionLink("Forgot password?", "ForgotPassword")
+            </form>
         </div>
     }
-</body>
+

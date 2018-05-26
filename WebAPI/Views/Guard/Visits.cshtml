@@ -1,5 +1,7 @@
 ﻿@{
     ViewBag.Title = "Visits";
+    
+    Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
 
 @{
@@ -19,6 +21,7 @@
                     <th>Visitor:</th>
                     <th>Is approved:</th>
                     <th>Visit approved by:</th>
+                    <th>Available action:</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +43,11 @@
                                 @if (visit.IsConfirmed == true)
                                 {
                                     <td>@Html.ActionLink("End visit", "EndVisit", new RouteValueDictionary(visit))</td>
-                                }                          
+                                }    
+                                @if (visit.IsConfirmed == null)
+                                {
+                                    <td>No action available</td>
+                                }  
                             </tr>
                         }
                     }

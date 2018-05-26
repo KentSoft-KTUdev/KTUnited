@@ -21,8 +21,9 @@
                 <a class="navbar-brand" href="@Url.Action("Index", "Main")">KTU United</a>
 
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Page 2</a></li>
+                    <li>@Html.ActionLink("Web App", "Index", "Main", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Development Team", "Index", "Team", new { area = "" }, null)</li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
