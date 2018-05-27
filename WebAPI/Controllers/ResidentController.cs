@@ -22,9 +22,9 @@ namespace WebAPI.Controllers
         {
             if (IsLoggedOn())
             {
-                return RedirectToAction("ControlPanel");
+                return View();
             }
-            return View();
+            return RedirectToAction("LoginForm", "Main");
         }
 
         public ActionResult Successful()
@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         public ActionResult RegisterGuest()
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         [HttpPost]
@@ -51,12 +51,10 @@ namespace WebAPI.Controllers
         {
             if (IsLoggedOn())
             {
-                //System.Net.Http.HttpResponseMessage message = new System.Net.Http.HttpResponseMessage();
-                //message.ReasonPhrase = "Created";
                 if (guestRepository.Create((guest)).ReasonPhrase == "Created")
                 return RedirectToAction("Successful");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         public ActionResult MyVisits()
@@ -64,8 +62,8 @@ namespace WebAPI.Controllers
             if (IsLoggedOn())
             {
                 #region ViewBag
-                List<Visit> visits = visitRepository.GetResidentVisits((long)Session["ResidentID"]);
-                List<Guest> guests = guestRepository.GetResidentGuests((long)Session["ResidentID"]);
+                List<Visit> visits = visitRepository.GetResidentVisits((long)Session["UserID"]);
+                List<Guest> guests = guestRepository.GetResidentGuests((long)Session["UserID"]);
                 List<Guard> guards = guardRepository.GetAll();
                 ViewBag.Visits = visits;
                 ViewBag.Guests = guests;
@@ -74,7 +72,7 @@ namespace WebAPI.Controllers
 
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         [HttpPost]
@@ -83,7 +81,7 @@ namespace WebAPI.Controllers
         {
             if (IsLoggedOn())
             {
-                Resident temp = residentRepository.Read(Session["ResidentID"]);
+                Resident temp = residentRepository.Read(Session["UserID"]);
 
                 visit.IsOver = false;
                 visit.ResidentId = temp.PersonalCode;
@@ -113,7 +111,7 @@ namespace WebAPI.Controllers
                 
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         public ActionResult RegisterVisitedGuest()
@@ -138,46 +136,13 @@ namespace WebAPI.Controllers
                 #endregion
                 return View();
             }
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Login()
-        {
-            if (IsLoggedOn())
-            {
-                return RedirectToAction("ControlPanel");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login([Bind(Include = "Username,Password")]Resident resident)
-        {
-            if (residentRepository.Login(resident.Username, DataContract.Configuration.Encryption(resident.Password)).IsSuccessStatusCode)
-            {
-                resident = residentRepository.ReadByUsername(resident.Username);
-                Session["Username"] = resident.Username;
-                Session["ResidentID"] = resident.PersonalCode;
-                return RedirectToAction("ControlPanel");
-            }
-            return RedirectToAction("Index", resident);
-        }
-
-        public ActionResult ControlPanel()
-        {
-            if (IsLoggedOn())
-            {
-                ViewBag.Name = Session["Username"];
-                return View();
-            }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
         
 
         private bool IsLoggedOn()
         {
-            if (Session["ResidentID"] != null && residentRepository.Read(Session["ResidentID"]).Username.Equals(Session["Username"]))
+            if (Session["UserID"] != null && residentRepository.Read(Session["UserID"]).Username.Equals(Session["Username"]))
             {
                 return true;
             }

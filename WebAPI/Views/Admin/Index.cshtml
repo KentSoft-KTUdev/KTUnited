@@ -1,55 +1,23 @@
-﻿@model DataContract.Objects.Administrator
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Control Panel";
     Layout = "~/Views/Shared/_WebAppLayout.cshtml";
 }
+<body>
+    <h2>ControlPanel</h2>
+    <div align="center">
+        <h1>You are Admin</h1>
+        <p>Choose an option..</p>
 
-<link href="~/Content/loginstyle.css" rel="Stylesheet" type="text/css" />
-
-
-
-    @using (Html.BeginForm("Login", "Admin", FormMethod.Post, new { id = "submitForm" }))
-    {
-
-        @Html.AntiForgeryToken()
-        <div class="form-horizontal" align="center">
-
-            <hr />
-            @Html.ValidationSummary(true, "Test", new { @class = "text-danger" })
+        <div class="btn-group-vertical" data-toggle="buttons">
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterResident", "Admin")'">Register a resident</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("RegisterGuard", "Admin")'">Register a guard</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("CreateDormitory", "Admin")'">Add a dormitory</button>
+            <br />
+            <button type="button" class="btn btn-lg" onclick="location.href='@Url.Action("CreateRoom", "Admin")'">Add a room</button>
+            <br />
         </div>
-
-
-        <div class="login-form">
-            <form action="/examples/actions/confirmation.php" method="post">
-                <h2 class="text-center">Sign in</h2>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username", @autofocus = "autofocus" } })
-                        @Html.ValidationMessageFor(model => model.Username, "Username is manditory field", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Password", @type = "password" } })
-                        @Html.ValidationMessageFor(model => model.Password, "Password is manditory field", new { @class = "text-danger" })
-
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary login-btn btn-block">Sign in</button>
-                </div>
-                <div class="clearfix">
-                    @Html.CheckBox("remember", false, new { htmlAttributes = new { @class = "pull-left checkbox-inline" } })
-                    @Html.Label("Remember me")
-                    @Html.ActionLink("Forgot password?", "ForgotPassword", null, new { @class = "pull-right" })
-
-                </div>
-            </form>
-        </div>
-    }
-
-
-
+    </div>
+</body>

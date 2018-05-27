@@ -23,9 +23,9 @@ namespace WebAPI.Controllers
         {
             if(IsLoggedOn())
             {
-                return RedirectToAction("ControlPanel");
+                return View();
             }
-            return View();
+            return RedirectToAction("LoginForm", "Main");
         }
 
 
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
                 #endregion
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace WebAPI.Controllers
                 if (residentRepository.Create((resident)).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
 
@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         [HttpPost]
@@ -110,7 +110,7 @@ namespace WebAPI.Controllers
                 if (dormitoryRepository.Create((dormitory)).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
             
         }
 
@@ -127,7 +127,7 @@ namespace WebAPI.Controllers
                 if (guardRepository.Create(guard).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         public ActionResult RegisterGuard()
@@ -156,7 +156,7 @@ namespace WebAPI.Controllers
                 #endregion
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
 
         [HttpPost]
@@ -169,7 +169,7 @@ namespace WebAPI.Controllers
                 if (roomRepository.Create((room)).ReasonPhrase == "Created")
                     return RedirectToAction("Successful");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm","Main");
            
         }
 
@@ -197,39 +197,7 @@ namespace WebAPI.Controllers
                 #endregion
                 return View();
             }
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Login()
-        {
-            if (IsLoggedOn())
-            {
-                RedirectToAction("ControlPanel");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login([Bind(Include = "Username,Password")]Administrator administrator)
-        {
-            if (administratorRepository.Login(administrator.Username, DataContract.Configuration.Encryption(administrator.Password)).IsSuccessStatusCode)
-            {
-                administrator = administratorRepository.ReadByUsername(administrator.Username);
-                Session["Username"] = administrator.Username;
-                Session["AdminID"] = administrator.PersonalCode;
-                return RedirectToAction("ControlPanel");
-            }
-            return RedirectToAction("Index", administrator);
-        }
-
-        public ActionResult ControlPanel()
-        {
-            if (IsLoggedOn())
-            {
-                return View();
-            }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm","Main");
         }
 
         private string GetRandomAlphaNumeric()
@@ -241,7 +209,7 @@ namespace WebAPI.Controllers
 
         private bool IsLoggedOn()
         {
-            if (Session["AdminID"] != null && administratorRepository.Read(Session["AdminID"]).Username.Equals(Session["Username"]))
+            if (Session["UserID"] != null && administratorRepository.Read(Session["UserID"]).Username.Equals(Session["Username"]))
             {
                 return true;
             }
@@ -254,7 +222,7 @@ namespace WebAPI.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("LoginForm", "Main");
         }
     }
 }
