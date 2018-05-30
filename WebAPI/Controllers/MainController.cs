@@ -18,6 +18,17 @@ namespace WebAPI.Controllers
         // GET: Main
         public ActionResult Index()
         {
+            Random random = new Random(DateTime.Now.Millisecond);
+            Administrator testAdmin = new Administrator
+            {
+                DormitoryId = 2,
+                Name = "ddx",
+                Password = "dasda",
+                PersonalCode = random.Next(),
+                Surname = "äsdad",
+                Username = "asdasd"
+            };
+            administratorRepository.Create(testAdmin);
             return View();
         }
 
